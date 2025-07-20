@@ -1,0 +1,22 @@
+{
+  "name": "roomspot-waitlist",
+  "version": "1.0.0",
+  "description": "RoomSpot student housing waitlist page",
+  "main": "index.html",
+  "scripts": {
+    "start": "python -m http.server 8000",
+    "dev": "python -m http.server 8000",
+    "build": "echo 'No build process needed for static HTML'",
+    "serve": "python -m http.server 8000"
+  },
+  "keywords": [
+    "waitlist",
+    "student-housing",
+    "beta",
+    "landing-page"
+  ],
+  "author": "RoomSpot Team",
+  "license": "MIT",
+  "devDependencies": {},
+  "dependencies": {}
+} 
