@@ -7,8 +7,7 @@
     "start": "python -m http.server 8000",
     "dev": "python -m http.server 8000",
     "build": "echo 'Static site - no build process needed'",
-    "serve": "python -m http.server 8000",
-    "vercel-build": "echo 'Static site - no build needed'"
+    "serve": "python -m http.server 8000"
   },
   "keywords": [
     "waitlist",
