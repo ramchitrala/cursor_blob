@@ -4,19 +4,26 @@
   "description": "RoomSpot student housing waitlist page",
   "main": "index.html",
   "scripts": {
-    "start": "python -m http.server 8000",
-    "dev": "python -m http.server 8000",
+    "start": "npx serve .",
+    "dev": "npx serve .",
     "build": "echo 'Static site - no build process needed'",
-    "serve": "python -m http.server 8000"
+    "serve": "npx serve .",
+    "deploy": "echo 'Ready for deployment'"
   },
   "keywords": [
     "waitlist",
     "student-housing",
     "beta",
-    "landing-page"
+    "landing-page",
+    "static-site"
   ],
   "author": "RoomSpot Team",
   "license": "MIT",
-  "devDependencies": {},
-  "dependencies": {}
+  "devDependencies": {
+    "serve": "^14.2.1"
+  },
+  "dependencies": {},
+  "engines": {
+    "node": ">=14.0.0"
+  }
 } 

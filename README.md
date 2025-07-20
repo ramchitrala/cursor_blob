@@ -2,7 +2,7 @@
 
 A modern, animated waitlist page for RoomSpot's student housing platform. Features a beautiful UI with 60fps animations and special handling for student (.edu) email addresses.
 
-## Features
+## 🚀 Features
 
 - **60fps Animations**: Smooth gradient orbs that follow mouse movement
 - **Student Priority**: Special beta access for .edu email addresses
@@ -10,41 +10,76 @@ A modern, animated waitlist page for RoomSpot's student housing platform. Featur
 - **Modern UI**: Glassmorphism effects and micro-interactions
 - **Performance Optimized**: Throttled animations and efficient particle system
 
-## Project Structure
+## 📁 Project Structure
 
 ```
-cursor_blob/
+roomspot-waitlist/
 ├── index.html              # Main HTML file
-├── src/
-│   ├── css/
-│   │   └── styles.css      # All CSS styles
-│   ├── js/
-│   │   └── main.js         # JavaScript functionality
-│   └── assets/             # Images and other assets
-├── dist/                   # Build output (if needed)
+├── styles.css              # All CSS styles
+├── main.js                 # JavaScript functionality
 ├── package.json            # Project configuration
+├── vercel.json            # Vercel deployment config
+├── .gitignore             # Git ignore rules
 └── README.md              # This file
 ```
 
-## Getting Started
+## 🛠️ Getting Started
+
+### Prerequisites
+- Node.js 14+ 
+- npm or yarn
+
+### Installation
 
 1. **Clone the repository**
    ```bash
    git clone <repository-url>
-   cd cursor_blob
+   cd roomspot-waitlist
    ```
 
-2. **Start the development server**
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
+
+3. **Start the development server**
    ```bash
    npm start
    # or
-   python -m http.server 8000
+   npm run dev
    ```
 
-3. **Open in browser**
-   Navigate to `http://localhost:8000`
+4. **Open in browser**
+   Navigate to `http://localhost:3000`
 
-## Key Features
+## 🚀 Deployment
+
+### Vercel (Recommended)
+```bash
+# Install Vercel CLI
+npm i -g vercel
+
+# Deploy
+vercel
+```
+
+### Netlify
+```bash
+# Install Netlify CLI
+npm i -g netlify-cli
+
+# Deploy
+netlify deploy
+```
+
+### Manual Deployment
+Simply upload the files to any static hosting service:
+- GitHub Pages
+- AWS S3
+- Firebase Hosting
+- Any static file server
+
+## 🎯 Key Features
 
 ### Email Detection
 - Automatically detects .edu email addresses
@@ -58,18 +93,44 @@ cursor_blob/
 - Smooth transitions and micro-interactions
 
 ### UI Improvements
-- **Fixed Pro Tip**: Simplified to "Tip: Use school email to join early access beta"
+- **Professional Tip Design**: Clean, centered tip messages
 - **Fixed Input Blocking**: School email input no longer blocks after entering personal email
 - **Corporate Standard**: Consistent typography and spacing throughout
 
-## Browser Support
+## 🌐 Browser Support
 
 - Chrome 80+
 - Firefox 75+
 - Safari 13+
 - Edge 80+
 
-## License
+## 📦 Build & Deploy
+
+This is a static site with no build process required. All files are ready for deployment:
+
+```bash
+# Development
+npm start
+
+# Production (ready to deploy)
+npm run deploy
+```
+
+## 🔧 Configuration
+
+### Vercel Configuration
+The `vercel.json` file is configured for optimal static site deployment:
+- Static file serving
+- SPA routing support
+- No build process required
+
+### Package Scripts
+- `npm start` - Start development server
+- `npm run dev` - Development mode
+- `npm run build` - No build process (static site)
+- `npm run deploy` - Ready for deployment
+
+## 📄 License
 
 MIT License - see LICENSE file for details. 
 

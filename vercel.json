@@ -11,5 +11,10 @@
       "src": "/(.*)",
       "dest": "/index.html"
     }
-  ]
+  ],
+  "functions": {},
+  "outputDirectory": ".",
+  "buildCommand": "echo 'Static site - no build needed'",
+  "installCommand": "npm install",
+  "framework": null
 } 
