@@ -40,8 +40,8 @@ body {
     font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", sans-serif;
     background: var(--bg);
     color: var(--primary);
-    min-height: 100vh;
-    overflow-x: hidden;
+    height: 100vh;
+    overflow: hidden;
     position: relative;
 }
 
@@ -147,17 +147,19 @@ body {
 .main-container {
     position: relative;
     z-index: 1;
-    min-height: 100vh;
+    height: 100vh;
     display: flex;
     flex-direction: column;
 }
 
 /* Header */
 header {
-    padding: 32px 48px;
+    padding: clamp(24px, 4vh, 48px) clamp(24px, 4vw, 48px);
     display: flex;
     align-items: center;
+    justify-content: center;
     animation: headerSlide 1s var(--easing-expo) both;
+    flex-shrink: 0;
 }
 
 @keyframes headerSlide {
@@ -186,11 +188,13 @@ header {
 }
 
 .logo-icon {
-    width: clamp(80px, 8vw, 120px);
-    height: clamp(80px, 8vw, 120px);
+    width: clamp(160px, 15vw, 240px);
+    height: clamp(160px, 15vw, 240px);
     position: relative;
     transition: transform 0.6s var(--easing);
     flex-shrink: 0;
+    opacity: 0;
+    animation: logoFadeIn 1.2s var(--easing) 0.3s forwards;
 }
 
 .logo-icon img {
@@ -198,9 +202,23 @@ header {
     height: 100%;
     object-fit: contain;
     filter: brightness(0) invert(1);
+    will-change: transform;
+    backface-visibility: hidden;
 }
 
 /* Logo text removed since logo.png contains the text */
+
+/* Clean Logo Fade Animation */
+@keyframes logoFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
 
 /* Hero Section */
 .hero {
@@ -208,18 +226,21 @@ header {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 20px 24px;
+    padding: clamp(12px, 2vh, 24px) clamp(16px, 3vw, 24px);
     text-align: center;
-    min-height: calc(100vh - 120px);
-    max-height: calc(100vh - 120px);
     overflow: hidden;
+    min-height: 0;
 }
 
 .hero-content {
-    max-width: 840px;
+    max-width: min(840px, 90vw);
     width: 100%;
     position: relative;
     z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: clamp(12px, 2vh, 24px);
 }
 
 /* Badge */
@@ -227,18 +248,19 @@ header {
     display: inline-flex;
     align-items: center;
     gap: 10px;
-    padding: 12px 24px;
+    padding: clamp(8px, 1.5vh, 12px) clamp(16px, 3vw, 24px);
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: 100px;
-    font-size: 13px;
+    font-size: clamp(11px, 1.5vw, 13px);
     font-weight: 500;
     letter-spacing: 0.5px;
     text-transform: uppercase;
-    margin-bottom: 20px;
     backdrop-filter: blur(20px);
-    animation: badgeFloat 1.2s var(--easing-expo) 0.3s both;
+    animation: badgeFloat 1.2s var(--easing-expo) 1.8s both;
     transition: all 0.3s var(--easing);
+    flex-shrink: 0;
+    opacity: 0;
 }
 
 @keyframes badgeFloat {
@@ -288,16 +310,18 @@ header {
 
 /* Title */
 h1 {
-    font-size: clamp(32px, 6vw, 64px);
+    font-size: clamp(24px, 5vw, 56px);
     font-weight: 800;
     line-height: 1.1;
     letter-spacing: -0.03em;
-    margin: 0 0 24px 0;
+    margin: 0;
     color: #ffffff;
-    animation: titleReveal 1.5s var(--easing-expo) 0.5s both;
+    animation: titleReveal 1.5s var(--easing-expo) 2.2s both;
     position: relative;
     display: block;
     text-align: center;
+    flex-shrink: 0;
+    opacity: 0;
 }
 
 @keyframes titleReveal {
@@ -321,11 +345,13 @@ h1 .gradient-text {
 }
 
 .subtitle {
-    font-size: 18px;
+    font-size: clamp(14px, 2.5vw, 18px);
     line-height: 1.5;
     color: var(--text-secondary);
-    margin-bottom: 30px;
-    animation: subtitleFade 1.2s var(--easing) 0.8s both;
+    animation: subtitleFade 1.2s var(--easing) 2.5s both;
+    flex-shrink: 0;
+    text-align: center;
+    opacity: 0;
 }
 
 @keyframes subtitleFade {
@@ -341,9 +367,11 @@ h1 .gradient-text {
 
 /* Form */
 .form-wrapper {
-    max-width: 440px;
-    margin: 0 auto;
-    animation: formSlide 1.2s var(--easing) 1s both;
+    max-width: min(440px, 85vw);
+    width: 100%;
+    animation: formSlide 1.2s var(--easing) 2.8s both;
+    flex-shrink: 0;
+    opacity: 0;
 }
 
 @keyframes formSlide {
@@ -359,7 +387,7 @@ h1 .gradient-text {
 
 .input-group {
     position: relative;
-    margin-bottom: 32px;
+    margin-bottom: clamp(16px, 3vh, 24px);
 }
 
 /* Email Type Notice - Glassmorphic */
@@ -449,8 +477,8 @@ h1 .gradient-text {
 
 .email-input {
     width: 100%;
-    padding: 20px 24px;
-    font-size: 17px;
+    padding: clamp(16px, 3vh, 20px) clamp(20px, 4vw, 24px);
+    font-size: clamp(15px, 2.5vw, 17px);
     font-weight: 500;
     background: var(--surface);
     border: 1px solid var(--border);
@@ -489,12 +517,12 @@ h1 .gradient-text {
 
 .submit-btn {
     width: 100%;
-    padding: 20px 32px;
+    padding: clamp(16px, 3vh, 20px) clamp(24px, 5vw, 32px);
     background: var(--primary);
     color: var(--bg);
     border: none;
     border-radius: 16px;
-    font-size: 17px;
+    font-size: clamp(15px, 2.5vw, 17px);
     font-weight: 700;
     letter-spacing: -0.2px;
     cursor: pointer;
@@ -949,13 +977,9 @@ h1 .gradient-text {
     to { transform: rotate(360deg); }
 }
 
-/* Responsive */
+/* Responsive - No scrolling, perfect fit */
 @media (max-width: 768px) {
-    header { padding: 24px; }
-    h1 { font-size: 40px; }
-    .subtitle { font-size: 18px; }
     .modal { padding: 32px 24px; }
-    .hero { padding: 40px 20px; }
     .upgrade-form {
         flex-direction: column;
     }
@@ -964,25 +988,62 @@ h1 .gradient-text {
     }
 }
 
-/* Logo optimization for different screen sizes */
-@media (max-width: 480px) {
-    .logo-icon {
-        width: 60px;
-        height: 60px;
+/* Extra small screens */
+@media (max-height: 600px) {
+    .hero-content {
+        gap: clamp(6px, 1.5vh, 12px);
     }
-}
-
-@media (min-width: 1200px) {
+    
+    .badge {
+        padding: clamp(6px, 1vh, 8px) clamp(12px, 2vw, 16px);
+        font-size: clamp(10px, 1.2vw, 12px);
+    }
+    
+    h1 {
+        font-size: clamp(20px, 4vw, 32px);
+    }
+    
+    .subtitle {
+        font-size: clamp(12px, 2vw, 16px);
+    }
+    
     .logo-icon {
         width: 100px;
         height: 100px;
     }
 }
 
-@media (min-width: 1920px) {
+/* Extra large screens */
+@media (min-height: 1000px) {
+    .hero-content {
+        gap: clamp(16px, 2.5vh, 32px);
+    }
+    
+    .logo-icon {
+        width: 280px;
+        height: 280px;
+    }
+}
+
+/* Logo optimization for different screen sizes */
+@media (max-width: 480px) {
     .logo-icon {
         width: 120px;
         height: 120px;
+    }
+}
+
+@media (min-width: 1200px) {
+    .logo-icon {
+        width: 200px;
+        height: 200px;
+    }
+}
+
+@media (min-width: 1920px) {
+    .logo-icon {
+        width: 240px;
+        height: 240px;
     }
 }
 
