@@ -1,0 +1,29 @@
+{
+  "name": "roomspot-frontend",
+  "version": "1.0.0",
+  "description": "RoomSpot frontend application",
+  "main": "index.html",
+  "scripts": {
+    "start": "npx serve .",
+    "dev": "npx serve .",
+    "build": "echo 'Static site - no build process needed'",
+    "serve": "npx serve .",
+    "deploy": "echo 'Ready for deployment'"
+  },
+  "keywords": [
+    "waitlist",
+    "student-housing",
+    "beta",
+    "landing-page",
+    "static-site"
+  ],
+  "author": "RoomSpot Team",
+  "license": "MIT",
+  "devDependencies": {
+    "serve": "^14.2.1"
+  },
+  "dependencies": {},
+  "engines": {
+    "node": ">=14.0.0"
+  }
+} 

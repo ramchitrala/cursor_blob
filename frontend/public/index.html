@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RoomSpot - Join the Beta</title>
+    <link rel="stylesheet" href="../src/styles/styles.css">
+</head>
+<body>
+    <!-- Background Layers -->
+    <div class="bg-wrapper">
+        <div class="gradient-orb" id="gradientOrb" style="transform: translate(-50%, -50%);"></div>
+        <div class="gradient-orb secondary" id="gradientOrbSecondary" style="transform: translate(-50%, -50%);"></div>
+        <div class="orb-container">
+            <div class="orb orb1"></div>
+            <div class="orb orb2"></div>
+        </div>
+        <div class="grid-layer"></div>
+        <div class="noise"></div>
+    </div>
+    
+    <!-- Floating Particles -->
+    <div class="particles" id="particles"></div>
+    
+    <!-- Main Content -->
+    <div class="main-container">
+        <!-- Header -->
+        <header>
+            <a href="/" class="logo-link">
+                <div class="logo-icon">
+                    <img src="../src/assets/logo.png" alt="RoomSpot" class="logo-image">
+                </div>
+            </a>
+        </header>
+        
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="hero-content">
+                <div class="badge">
+                    <span class="status-dot"></span>
+                    <span>Student Beta • Coming Soon</span>
+                </div>
+                
+                <h1>
+                    <span class="gradient-text">The future of<br>affordable student housing</span>
+                </h1>
+                
+                <p class="subtitle">
+                    Students with .edu emails get exclusive beta access.<br>
+                    Everyone else joins the general launch waitlist.
+                </p>
+                
+                <div class="form-wrapper">
+                    <div class="input-group">
+                        <input 
+                            type="email" 
+                            id="emailInput" 
+                            class="email-input" 
+                            placeholder="your@email.com"
+                            autocomplete="email"
+                        >
+                        <div id="error" class="error">Please enter a valid email address</div>
+                        <div id="emailNotice" class="email-notice">
+                            <div class="notice-text">
+                                <div class="notice-icon">
+                                    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z" fill="currentColor"/>
+                                    </svg>
+                                </div>
+                                <div class="notice-content">
+                                    <div class="notice-title">Tip:</div>
+                                    <div class="notice-options">
+                                        <div class="notice-option">Use school email to join early access beta</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="submit-btn" id="submitBtn" onclick="handleSubmit()">
+                        Request Early Access
+                    </button>
+                </div>
+            </div>
+        </section>
+    </div>
+    
+    <!-- Modal -->
+    <div class="modal-overlay" id="modal">
+        <div class="modal" role="dialog" aria-label="User type selection">
+            <div id="questionStep">
+                <h2>Tell us how you'll use RoomSpot</h2>
+                <p id="modalSubtitle">How will you use RoomSpot?</p>
+                
+                <button class="choice-btn" onclick="selectChoice('looking')">
+                    <div class="choice-icon">
+                        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                            <circle cx="11" cy="11" r="8"/>
+                            <path d="m21 21-4.35-4.35"/>
+                        </svg>
+                    </div>
+                    <div class="choice-content">
+                        <div class="choice-title">I'm looking for a room</div>
+                        <div class="choice-desc">Find verified rooms from fellow students</div>
+                    </div>
+                </button>
+                
+                <button class="choice-btn" onclick="selectChoice('hosting')">
+                    <div class="choice-icon">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                            <polyline points="9 22 9 12 15 12 15 22"/>
+                        </svg>
+                    </div>
+                    <div class="choice-content">
+                        <div class="choice-title">I'm hosting a room</div>
+                        <div class="choice-desc">List your spare room to verified students</div>
+                    </div>
+                </button>
+            </div>
+            
+            <div id="success" style="text-align: center;">
+                <div class="success-icon-wrapper">
+                    <div class="success-circle">
+                        <svg class="success-checkmark" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                            <path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                </div>
+                <div id="earlyAccessBadge" class="early-access-badge" style="display: none;">
+                    <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+                        <path d="M8 0l2.5 5.3L16 6.1l-4 4.1.9 5.8L8 13.3 3.1 16l.9-5.8L0 6.1l5.5-.8z"/>
+                    </svg>
+                    Beta Access
+                </div>
+                <h2 id="successTitle" style="text-align: center;">Thank you — we'll be in touch</h2>
+                <p id="successMessage" style="text-align: center;">We'll notify you when RoomSpot launches.</p>
+                
+                <!-- Pro Tip Section - FIXED: Simplified and corporate standard -->
+                <div id="proTipSection" class="pro-tip" style="display: none; opacity: 0; transform: translateY(20px); transition: all 0.5s ease-out;">
+                    <div class="pro-tip-header">
+                        <div class="pro-tip-title">
+                            <div style="font-weight: 700; font-size: 16px; margin-bottom: 4px;">Early access for campus emails.</div>
+                            <div style="font-weight: 400; font-size: 13px; color: rgba(255, 255, 255, 0.7);">Be first to see verified rooms near your school.</div>
+                        </div>
+                    </div>
+                    <div class="upgrade-form">
+                        <input 
+                            type="email" 
+                            id="schoolEmailInput" 
+                            class="upgrade-input" 
+                            placeholder="netid@college.edu"
+                        >
+                        <button class="upgrade-btn" onclick="upgradeToStudent()">
+                            Unlock beta
+                        </button>
+                        <div style="font-size: 12px; color: rgba(255, 255, 255, 0.5); text-align: center; margin-top: 12px; line-height: 1.4;">
+                            Only beta updates — opt out anytime.
+                        </div>
+                    </div>
+                    <div id="upgradeSuccess" class="upgrade-success">
+                        ✓ You'll get early access when we launch the beta
+                    </div>
+                </div>
+                
+                <div class="success-actions">
+                    <button class="action-btn" onclick="closeModal()">Done</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../src/main.js"></script>
+</body>
+</html> 
