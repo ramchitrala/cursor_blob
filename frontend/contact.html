@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Contact Us - RoomSpot</title>
+    <link rel="stylesheet" href="src/styles/styles.css">
+</head>
+<body>
+    <!-- Background Layers -->
+    <div class="bg-wrapper">
+        <div class="gradient-orb" id="gradientOrb" style="transform: translate(-50%, -50%);"></div>
+        <div class="gradient-orb secondary" id="gradientOrbSecondary" style="transform: translate(-50%, -50%);"></div>
+        <div class="orb-container">
+            <div class="orb orb1"></div>
+            <div class="orb orb2"></div>
+        </div>
+        <div class="grid-layer"></div>
+        <div class="noise"></div>
+    </div>
+    
+    <!-- Floating Particles -->
+    <div class="particles" id="particles"></div>
+    
+    <!-- Main Content -->
+    <div class="main-container">
+        <!-- Header -->
+        <header>
+            <a href="/" class="logo-link">
+                <div class="logo-icon">
+                    <img src="src/assets/logo.png" alt="RoomSpot" class="logo-image">
+                </div>
+            </a>
+            <nav class="nav-links">
+                <a href="/" class="nav-link">Home</a>
+                <a href="careers.html" class="nav-link">Careers</a>
+            </nav>
+        </header>
+        
+        <!-- Contact Content -->
+        <section class="contact-content">
+            <div class="contact-container">
+                <div class="contact-header">
+                    <h1>Get in Touch</h1>
+                    <p class="contact-subtitle">Have questions about RoomSpot? We'd love to hear from you.</p>
+                </div>
+                
+                <div class="contact-grid">
+                    <div class="contact-form-section">
+                        <h2>Send us a Message</h2>
+                        <form class="contact-form" id="contactForm">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="firstName">First Name</label>
+                                    <input type="text" id="firstName" name="firstName" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="lastName">Last Name</label>
+                                    <input type="text" id="lastName" name="lastName" required>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="email">Email Address</label>
+                                <input type="email" id="email" name="email" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="subject">Subject</label>
+                                <select id="subject" name="subject" required>
+                                    <option value="">Select a topic</option>
+                                    <option value="general">General Inquiry</option>
+                                    <option value="beta-access">Beta Access Request</option>
+                                    <option value="partnership">Partnership Opportunity</option>
+                                    <option value="support">Technical Support</option>
+                                    <option value="feedback">Feedback</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="message">Message</label>
+                                <textarea id="message" name="message" rows="6" placeholder="Tell us how we can help..." required></textarea>
+                            </div>
+                            
+                            <button type="submit" class="submit-contact-btn">Send Message</button>
+                        </form>
+                    </div>
+                    
+                    <div class="contact-info-section">
+                        <h2>Contact Information</h2>
+                        
+                        <div class="contact-method">
+                            <div class="contact-icon">
+                                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                                    <polyline points="22,6 12,13 2,6"/>
+                                </svg>
+                            </div>
+                            <div class="contact-details">
+                                <h3>Email</h3>
+                                <p>hello@roomspot.com</p>
+                                <p>support@roomspot.com</p>
+                            </div>
+                        </div>
+                        
+                        <div class="contact-method">
+                            <div class="contact-icon">
+                                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                                    <circle cx="12" cy="10" r="3"/>
+                                </svg>
+                            </div>
+                            <div class="contact-details">
+                                <h3>Location</h3>
+                                <p>San Francisco, CA</p>
+                                <p>United States</p>
+                            </div>
+                        </div>
+                        
+                        <div class="contact-method">
+                            <div class="contact-icon">
+                                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+                                </svg>
+                            </div>
+                            <div class="contact-details">
+                                <h3>Phone</h3>
+                                <p>+1 (415) 555-0123</p>
+                                <p>Mon-Fri, 9AM-6PM PST</p>
+                            </div>
+                        </div>
+                        
+                        <div class="contact-method">
+                            <div class="contact-icon">
+                                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                                    <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
+                                </svg>
+                            </div>
+                            <div class="contact-details">
+                                <h3>Social</h3>
+                                <p>Follow us on social media</p>
+                                <p>for updates and news</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="faq-section">
+                    <h2>Frequently Asked Questions</h2>
+                    <div class="faq-grid">
+                        <div class="faq-item">
+                            <h3>When will RoomSpot launch?</h3>
+                            <p>We're currently in beta testing with select universities. Join our waitlist to be notified when we launch in your area.</p>
+                        </div>
+                        <div class="faq-item">
+                            <h3>How do I get beta access?</h3>
+                            <p>Students with .edu email addresses get priority access to our beta program. Sign up with your school email to join early.</p>
+                        </div>
+                        <div class="faq-item">
+                            <h3>Is RoomSpot free to use?</h3>
+                            <p>Yes! RoomSpot is completely free for students. We believe affordable housing should be accessible to everyone.</p>
+                        </div>
+                        <div class="faq-item">
+                            <h3>How do you verify listings?</h3>
+                            <p>We use a combination of school verification, user reviews, and our own verification process to ensure all listings are legitimate.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Footer -->
+        <footer class="main-footer">
+            <div class="footer-content">
+                <div class="footer-links">
+                    <a href="careers.html" class="footer-link">
+                        <span class="footer-link-icon">💼</span>
+                        <span>Join Our Team</span>
+                    </a>
+                    <a href="contact.html" class="footer-link active">
+                        <span class="footer-link-icon">📧</span>
+                        <span>Contact</span>
+                    </a>
+                    <a href="privacy.html" class="footer-link">
+                        <span class="footer-link-icon">🔒</span>
+                        <span>Privacy</span>
+                    </a>
+                </div>
+                <div class="footer-text">
+                    © 2025 RoomSpot. Building the future of student housing.
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script src="src/contact.js"></script>
+</body>
+</html> 

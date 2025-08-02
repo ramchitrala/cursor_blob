@@ -1,3 +1,6 @@
+// Import Supabase functions
+import { storeUserData, isEducationalEmail } from './supabase.js';
+
 // Store user data
 let userData = {
     emails: [],
@@ -85,21 +88,11 @@ for (let i = 0; i < 20; i++) {
 }
 setInterval(createParticle, 2000);
 
-// Check if email is educational
-function isEducationalEmail(email) {
-    const educationDomains = [
-        '.edu', '.edu.', '.ac.', '.edu.au', '.edu.cn', '.edu.in',
-        '.ac.uk', '.ac.jp', '.ac.kr', '.ac.ca', '.edu.mx',
-        '.edu.br', '.edu.sg', '.edu.hk', '.edu.my'
-    ];
-    
-    return educationDomains.some(domain => 
-        email.toLowerCase().includes(domain)
-    );
-}
+// Check if email is educational (now imported from supabase.js)
+// Function is now imported from supabase.js
 
 // Form handling
-function handleSubmit() {
+async function handleSubmit() {
     const email = document.getElementById('emailInput').value.trim();
     const error = document.getElementById('error');
     const notice = document.getElementById('emailNotice');
@@ -121,6 +114,18 @@ function handleSubmit() {
         type: isEducationalEmail(email) ? 'educational' : 'personal',
         timestamp: new Date().toISOString()
     });
+    
+    // Store user data in Supabase
+    const result = await storeUserData({
+        email: email,
+        userType: '',
+        isBetaUser: isEducationalEmail(email),
+        schoolEmail: null
+    });
+    
+    if (!result.success) {
+        console.error('Failed to store user data:', result.error);
+    }
     
     // Update modal subtitle based on email type
     const modalSubtitle = document.getElementById('modalSubtitle');
@@ -322,7 +327,7 @@ function createSuccessAnimation(container) {
 }
 
 // Upgrade to student beta access with animation
-function upgradeToStudent() {
+async function upgradeToStudent() {
     const schoolEmailInput = document.getElementById('schoolEmailInput');
     const schoolEmail = schoolEmailInput.value.trim();
     const upgradeBtn = event.currentTarget;
@@ -354,6 +359,18 @@ function upgradeToStudent() {
         timestamp: new Date().toISOString()
     });
     userData.isBetaUser = true;
+    
+    // Store updated user data in Supabase
+    const result = await storeUserData({
+        email: userData.emails[0].email, // Original email
+        userType: userData.userType,
+        isBetaUser: true,
+        schoolEmail: schoolEmail
+    });
+    
+    if (!result.success) {
+        console.error('Failed to update user data:', result.error);
+    }
     
     // Show loading
     upgradeBtn.disabled = true;

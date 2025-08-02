@@ -40,8 +40,8 @@ body {
     font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", sans-serif;
     background: var(--bg);
     color: var(--primary);
-    min-height: 100vh;
-    overflow: auto;
+    height: 100vh;
+    overflow: hidden;
     position: relative;
 }
 
@@ -147,14 +147,14 @@ body {
 .main-container {
     position: relative;
     z-index: 1;
-    min-height: 100vh;
+    height: 100vh;
     display: flex;
     flex-direction: column;
 }
 
 /* Header */
 header {
-    padding: clamp(16px, 2vh, 24px) clamp(24px, 4vw, 48px);
+    padding: clamp(6px, 0.8vh, 10px) clamp(24px, 4vw, 48px);
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -188,8 +188,8 @@ header {
 }
 
 .logo-icon {
-    width: clamp(160px, 15vw, 240px);
-    height: clamp(160px, 15vw, 240px);
+    width: clamp(80px, 8vw, 140px);
+    height: clamp(80px, 8vw, 140px);
     position: relative;
     transition: transform 0.6s var(--easing);
     flex-shrink: 0;
@@ -255,9 +255,9 @@ header {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: clamp(20px, 4vh, 40px) clamp(16px, 3vw, 24px);
+    padding: clamp(12px, 2vh, 24px) clamp(16px, 3vw, 24px);
     text-align: center;
-    min-height: calc(100vh - 180px);
+    height: calc(100vh - 120px);
 }
 
 .hero-content {
@@ -268,20 +268,20 @@ header {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: clamp(12px, 2vh, 24px);
-    margin-bottom: clamp(20px, 4vh, 40px);
+    gap: clamp(6px, 1vh, 16px);
+    margin-bottom: clamp(12px, 2vh, 24px);
 }
 
 /* Badge */
 .badge {
     display: inline-flex;
     align-items: center;
-    gap: 10px;
-    padding: clamp(8px, 1.5vh, 12px) clamp(16px, 3vw, 24px);
+    gap: 8px;
+    padding: clamp(6px, 1vh, 10px) clamp(14px, 2.5vw, 20px);
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: 100px;
-    font-size: clamp(11px, 1.5vw, 13px);
+    font-size: clamp(10px, 1.3vw, 12px);
     font-weight: 500;
     letter-spacing: 0.5px;
     text-transform: uppercase;
@@ -339,7 +339,7 @@ header {
 
 /* Title */
 h1 {
-    font-size: clamp(24px, 5vw, 56px);
+    font-size: clamp(18px, 4vw, 42px);
     font-weight: 800;
     line-height: 1.1;
     letter-spacing: -0.03em;
@@ -374,8 +374,8 @@ h1 .gradient-text {
 }
 
 .subtitle {
-    font-size: clamp(14px, 2.5vw, 18px);
-    line-height: 1.5;
+    font-size: clamp(12px, 2vw, 15px);
+    line-height: 1.4;
     color: var(--text-secondary);
     animation: subtitleFade 1.2s var(--easing) 2.5s both;
     flex-shrink: 0;
@@ -416,7 +416,7 @@ h1 .gradient-text {
 
 .input-group {
     position: relative;
-    margin-bottom: clamp(16px, 3vh, 24px);
+    margin-bottom: clamp(12px, 2vh, 20px);
 }
 
 /* Email Type Notice - Glassmorphic */
@@ -1021,7 +1021,7 @@ h1 .gradient-text {
         flex-direction: column;
         gap: 12px;
         text-align: center;
-        padding: clamp(12px, 1.5vh, 16px) clamp(20px, 3vw, 24px);
+        padding: clamp(6px, 1vh, 8px) clamp(20px, 3vw, 24px);
     }
     
     .nav-links {
@@ -1047,66 +1047,93 @@ h1 .gradient-text {
 /* Extra small screens */
 @media (max-height: 600px) {
     .hero-content {
-        gap: clamp(6px, 1.5vh, 12px);
+        gap: clamp(4px, 1vh, 8px);
     }
     
     .badge {
-        padding: clamp(6px, 1vh, 8px) clamp(12px, 2vw, 16px);
-        font-size: clamp(10px, 1.2vw, 12px);
+        padding: clamp(4px, 0.8vh, 6px) clamp(10px, 1.5vw, 12px);
+        font-size: clamp(9px, 1vw, 11px);
     }
     
     h1 {
-        font-size: clamp(20px, 4vw, 32px);
+        font-size: clamp(18px, 3.5vw, 28px);
     }
     
     .subtitle {
-        font-size: clamp(12px, 2vw, 16px);
+        font-size: clamp(11px, 1.8vw, 14px);
     }
     
     .logo-icon {
-        width: 100px;
-        height: 100px;
+        width: 80px;
+        height: 80px;
+    }
+    
+    .hero {
+        min-height: calc(100vh - 120px);
+        padding: clamp(12px, 2vh, 20px) clamp(16px, 3vw, 24px);
+    }
+    
+    .careers-hero {
+        min-height: calc(100vh - 120px);
+        padding: clamp(8px, 1vh, 16px) clamp(16px, 3vw, 24px);
+    }
+    
+    .careers-hero-content {
+        gap: clamp(4px, 1vh, 8px);
+    }
+    
+    .positions-section {
+        padding: clamp(24px, 4vh, 48px) clamp(16px, 3vw, 24px);
+    }
+    
+    .section-title {
+        margin-bottom: clamp(20px, 3vh, 28px);
+    }
+    
+    .position-card {
+        padding: clamp(16px, 2.5vh, 24px);
+        margin-bottom: clamp(16px, 2.5vh, 20px);
     }
 }
 
 /* Extra large screens */
 @media (min-height: 1000px) {
     .hero-content {
-        gap: clamp(16px, 2.5vh, 32px);
+        gap: clamp(12px, 2vh, 24px);
     }
     
     .logo-icon {
-        width: 280px;
-        height: 280px;
+        width: 220px;
+        height: 220px;
     }
 }
 
 /* Logo optimization for different screen sizes */
 @media (max-width: 480px) {
     .logo-icon {
-        width: 120px;
-        height: 120px;
+        width: 100px;
+        height: 100px;
     }
 }
 
 @media (min-width: 1200px) {
+    .logo-icon {
+        width: 180px;
+        height: 180px;
+    }
+}
+
+@media (min-width: 1920px) {
     .logo-icon {
         width: 200px;
         height: 200px;
     }
 }
 
-@media (min-width: 1920px) {
-    .logo-icon {
-        width: 240px;
-        height: 240px;
-    }
-}
-
 /* Footer */
 .main-footer {
     margin-top: auto;
-    padding: clamp(16px, 2vh, 20px) clamp(24px, 4vw, 48px);
+    padding: clamp(8px, 1vh, 12px) clamp(24px, 4vw, 48px);
     border-top: 1px solid rgba(255, 255, 255, 0.06);
     background: rgba(0, 0, 0, 0.3);
     backdrop-filter: blur(20px);
@@ -1132,7 +1159,7 @@ h1 .gradient-text {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: clamp(16px, 2vh, 20px);
+    gap: clamp(8px, 1vh, 12px);
 }
 
 .footer-links {
@@ -1459,9 +1486,9 @@ h1 .gradient-text {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: clamp(12px, 2vh, 24px) clamp(16px, 3vw, 24px);
+    padding: clamp(16px, 3vh, 32px) clamp(16px, 3vw, 24px);
     text-align: center;
-    min-height: 60vh;
+    min-height: calc(100vh - 160px);
 }
 
 .careers-hero-content {
@@ -1472,12 +1499,13 @@ h1 .gradient-text {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: clamp(12px, 2vh, 24px);
+    gap: clamp(8px, 1.5vh, 20px);
+    margin-bottom: clamp(16px, 3vh, 32px);
 }
 
 /* Positions Section */
 .positions-section {
-    padding: clamp(40px, 8vh, 80px) clamp(16px, 3vw, 24px);
+    padding: clamp(32px, 6vh, 64px) clamp(16px, 3vw, 24px);
     position: relative;
     z-index: 1;
 }
@@ -1488,9 +1516,9 @@ h1 .gradient-text {
 }
 
 .section-title {
-    font-size: clamp(28px, 5vw, 40px);
+    font-size: clamp(24px, 4.5vw, 36px);
     font-weight: 700;
-    margin-bottom: clamp(32px, 6vh, 48px);
+    margin-bottom: clamp(24px, 4vh, 36px);
     text-align: center;
     color: var(--primary);
     letter-spacing: -0.02em;
@@ -1501,8 +1529,8 @@ h1 .gradient-text {
     background: rgba(255, 255, 255, 0.03);
     border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 20px;
-    padding: clamp(24px, 4vh, 40px);
-    margin-bottom: clamp(24px, 4vh, 32px);
+    padding: clamp(20px, 3vh, 32px);
+    margin-bottom: clamp(20px, 3vh, 24px);
     backdrop-filter: blur(20px);
     transition: all 0.3s var(--easing);
     animation: fadeIn 0.8s var(--easing) 0.2s both;
@@ -1832,4 +1860,384 @@ h1 .gradient-text {
         display: inline-block;
         width: fit-content;
     }
+}
+
+/* Privacy Page Styles */
+.privacy-content {
+    flex: 1;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: clamp(32px, 4vh, 48px) clamp(24px, 4vw, 48px);
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.privacy-container {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    padding: clamp(32px, 4vh, 48px);
+    backdrop-filter: blur(20px);
+    width: 100%;
+    max-width: 800px;
+}
+
+.privacy-container h1 {
+    font-size: clamp(32px, 5vw, 48px);
+    font-weight: 700;
+    margin-bottom: 8px;
+    background: linear-gradient(135deg, #fff 0%, rgba(255, 255, 255, 0.8) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.last-updated {
+    color: var(--text-secondary);
+    font-size: 14px;
+    margin-bottom: 32px;
+}
+
+.privacy-section {
+    margin-bottom: 32px;
+}
+
+.privacy-section h2 {
+    font-size: clamp(20px, 3vw, 24px);
+    font-weight: 600;
+    margin-bottom: 16px;
+    color: var(--primary);
+}
+
+.privacy-section p {
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin-bottom: 16px;
+}
+
+.privacy-section ul {
+    list-style: none;
+    padding-left: 0;
+    margin-bottom: 16px;
+}
+
+.privacy-section li {
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin-bottom: 8px;
+    padding-left: 20px;
+    position: relative;
+}
+
+.privacy-section li::before {
+    content: "•";
+    color: var(--accent);
+    position: absolute;
+    left: 0;
+    font-weight: bold;
+}
+
+.contact-info {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 8px;
+    padding: 16px;
+    margin-top: 16px;
+}
+
+.contact-info p {
+    margin-bottom: 8px;
+    color: var(--primary);
+}
+
+/* Contact Page Styles */
+.contact-content {
+    flex: 1;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: clamp(32px, 4vh, 48px) clamp(24px, 4vw, 48px);
+    max-width: 1400px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.contact-container {
+    width: 100%;
+}
+
+.contact-header {
+    text-align: center;
+    margin-bottom: 48px;
+}
+
+.contact-header h1 {
+    font-size: clamp(32px, 5vw, 48px);
+    font-weight: 700;
+    margin-bottom: 16px;
+    background: linear-gradient(135deg, #fff 0%, rgba(255, 255, 255, 0.8) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.contact-subtitle {
+    color: var(--text-secondary);
+    font-size: clamp(16px, 2.5vw, 18px);
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    margin-bottom: 64px;
+}
+
+.contact-form-section,
+.contact-info-section {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    padding: clamp(24px, 3vh, 32px);
+    backdrop-filter: blur(20px);
+}
+
+.contact-form-section h2,
+.contact-info-section h2 {
+    font-size: clamp(20px, 3vw, 24px);
+    font-weight: 600;
+    margin-bottom: 24px;
+    color: var(--primary);
+}
+
+.contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.submit-contact-btn {
+    background: linear-gradient(135deg, var(--accent) 0%, #0066cc 100%);
+    color: white;
+    border: none;
+    padding: 16px 32px;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s var(--easing);
+    margin-top: 8px;
+}
+
+.submit-contact-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 128, 255, 0.3);
+}
+
+.submit-contact-btn:active {
+    transform: translateY(0);
+}
+
+.submit-contact-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.contact-method {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    margin-bottom: 24px;
+    padding: 16px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 12px;
+    transition: all 0.3s var(--easing);
+}
+
+.contact-method:hover {
+    background: rgba(255, 255, 255, 0.05);
+    transform: translateY(-2px);
+}
+
+.contact-icon {
+    width: 48px;
+    height: 48px;
+    background: rgba(0, 128, 255, 0.1);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.contact-icon svg {
+    width: 24px;
+    height: 24px;
+    color: var(--accent);
+}
+
+.contact-details h3 {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: var(--primary);
+}
+
+.contact-details p {
+    color: var(--text-secondary);
+    font-size: 14px;
+    line-height: 1.5;
+    margin-bottom: 4px;
+}
+
+.faq-section {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    padding: clamp(24px, 3vh, 32px);
+    backdrop-filter: blur(20px);
+}
+
+.faq-section h2 {
+    font-size: clamp(20px, 3vw, 24px);
+    font-weight: 600;
+    margin-bottom: 32px;
+    color: var(--primary);
+    text-align: center;
+}
+
+.faq-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 24px;
+}
+
+.faq-item {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    padding: 20px;
+    cursor: pointer;
+    transition: all 0.3s var(--easing);
+}
+
+.faq-item:hover {
+    background: rgba(255, 255, 255, 0.05);
+    transform: translateY(-2px);
+}
+
+.faq-item h3 {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 12px;
+    color: var(--primary);
+}
+
+.faq-item p {
+    color: var(--text-secondary);
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+/* Responsive Design for Privacy and Contact Pages */
+@media (max-width: 768px) {
+    .contact-grid {
+        grid-template-columns: 1fr;
+        gap: 32px;
+    }
+    
+    .faq-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .contact-method {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .contact-icon {
+        align-self: center;
+    }
+    
+    .privacy-container,
+    .contact-form-section,
+    .contact-info-section,
+    .faq-section {
+        padding: 24px;
+    }
+}
+
+@media (max-width: 480px) {
+    .privacy-content,
+    .contact-content {
+        padding: 16px;
+    }
+    
+    .privacy-container,
+    .contact-form-section,
+    .contact-info-section,
+    .faq-section {
+        padding: 20px;
+    }
+    
+    .contact-method {
+        padding: 12px;
+    }
+    
+    .contact-icon {
+        width: 40px;
+        height: 40px;
+    }
+    
+    .contact-icon svg {
+        width: 20px;
+        height: 20px;
+    }
+} 
+
+/* Form Error Styles */
+.error-message {
+    color: #ff3b5b;
+    font-size: 12px;
+    margin-top: 4px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    animation: fadeIn 0.3s ease-out;
+}
+
+.error-message svg {
+    flex-shrink: 0;
+}
+
+.form-group input.error,
+.form-group textarea.error,
+.form-group select.error {
+    border-color: #ff3b5b;
+    box-shadow: 0 0 0 1px rgba(255, 59, 91, 0.2);
+}
+
+.form-group input.error:focus,
+.form-group textarea.error:focus,
+.form-group select.error:focus {
+    border-color: #ff3b5b;
+    box-shadow: 0 0 0 2px rgba(255, 59, 91, 0.3);
+}
+
+/* Error animation */
+@keyframes errorShake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-4px); }
+    75% { transform: translateX(4px); }
+}
+
+.form-group input.error,
+.form-group textarea.error,
+.form-group select.error {
+    animation: errorShake 0.4s ease-in-out;
 } 
