@@ -1,5 +1,4 @@
-// Import Supabase functions
-import { storeUserData, isEducationalEmail } from './supabase.js';
+// Supabase functions are loaded globally via supabase-init.js
 
 // Store user data
 let userData = {
@@ -16,6 +15,7 @@ let hasSubmitted = false;
 let mouseX = 0, mouseY = 0;
 let rafId = null;
 let lastTime = 0;
+let mouseTimeout = null;
 
 function updateGradients() {
     const gradientOrb = document.getElementById('gradientOrb');
@@ -108,29 +108,66 @@ async function handleSubmit() {
     // Clear error
     error.style.display = 'none';
     
+    // Check for duplicate email first
+    try {
+        console.log('Checking for duplicate email:', email);
+        const duplicateCheck = await window.checkDuplicateEmail(email, 'waitlist');
+        
+        if (!duplicateCheck.success) {
+            console.error('Failed to check duplicate email:', duplicateCheck.error);
+            error.textContent = 'Network error. Please try again.';
+            error.style.display = 'block';
+            return;
+        }
+        
+        if (duplicateCheck.isDuplicate) {
+            error.textContent = duplicateCheck.message || 'This email is already enrolled.';
+            error.style.display = 'block';
+            return;
+        }
+    } catch (error) {
+        console.error('Error checking duplicate email:', error);
+        error.textContent = 'Network error. Please try again.';
+        error.style.display = 'block';
+        return;
+    }
+    
     // Add email to userData
     userData.emails.push({
         email: email,
-        type: isEducationalEmail(email) ? 'educational' : 'personal',
+        type: window.isEducationalEmail(email) ? 'educational' : 'personal',
         timestamp: new Date().toISOString()
     });
     
     // Store user data in Supabase
-    const result = await storeUserData({
-        email: email,
-        userType: '',
-        isBetaUser: isEducationalEmail(email),
-        schoolEmail: null
-    });
-    
-    if (!result.success) {
-        console.error('Failed to store user data:', result.error);
+    try {
+        console.log('Storing user data:', { email, isEdu: window.isEducationalEmail(email) });
+        const result = await window.storeUserData({
+            email: email,
+            userType: '',
+            isBetaUser: window.isEducationalEmail(email),
+            schoolEmail: null
+        });
+        
+        if (!result.success) {
+            console.error('Failed to store user data:', result.error);
+            error.textContent = 'Failed to save. Please try again.';
+            error.style.display = 'block';
+            return;
+        } else {
+            console.log('Successfully stored user data:', result.data);
+        }
+    } catch (error) {
+        console.error('Error storing user data:', error);
+        error.textContent = 'Network error. Please try again.';
+        error.style.display = 'block';
+        return;
     }
     
     // Update modal subtitle based on email type
     const modalSubtitle = document.getElementById('modalSubtitle');
     
-    if (isEducationalEmail(email)) {
+    if (window.isEducationalEmail(email)) {
         modalSubtitle.innerHTML = "Welcome to the <span style='color: var(--success);'>student beta!</span>";
         userData.isBetaUser = true;
     } else {
@@ -150,7 +187,7 @@ function checkEmailType(email) {
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     
     if (emailPattern.test(email)) {
-        if (!isEducationalEmail(email)) {
+        if (!window.isEducationalEmail(email)) {
             notice.classList.add('show');
             emailInput.classList.remove('edu-email');
             submitBtn.textContent = 'Request Early Access';
@@ -186,6 +223,30 @@ function selectChoice(choice) {
     
     // Update user data
     userData.userType = choice;
+    
+    // Update user data in Supabase with user type
+    (async () => {
+        try {
+            console.log('Updating user type:', { 
+                email: userData.emails[0].email, 
+                userType: choice 
+            });
+            const result = await window.storeUserData({
+                email: userData.emails[0].email,
+                userType: choice,
+                isBetaUser: userData.isBetaUser,
+                schoolEmail: null
+            });
+            
+            if (!result.success) {
+                console.error('Failed to update user type:', result.error);
+            } else {
+                console.log('Successfully updated user type:', result.data);
+            }
+        } catch (error) {
+            console.error('Error updating user type:', error);
+        }
+    })();
     
     // Check if user has any school email
     const hasSchoolEmail = userData.emails.some(e => e.type === 'educational');
@@ -224,8 +285,29 @@ function selectChoice(choice) {
     }, 1500);
 }
 
-// Add keyboard navigation for choice buttons
-document.addEventListener('DOMContentLoaded', function() {
+// Test Supabase connection and add keyboard navigation for choice buttons
+document.addEventListener('DOMContentLoaded', async function() {
+    // Test connection
+    console.log('🔄 Testing Supabase connection...');
+    try {
+        const connected = await window.testSupabaseConnection();
+        if (connected) {
+            console.log('✅ Ready to accept signups!');
+        } else {
+            console.log('❌ Supabase connection failed - signups may not work');
+        }
+        
+        // Test with sample data (for debugging)
+        console.log('🧪 Testing email validation:');
+        console.log('test@gmail.com is edu:', window.isEducationalEmail('test@gmail.com'));
+        console.log('student@stanford.edu is edu:', window.isEducationalEmail('student@stanford.edu'));
+    } catch (error) {
+        console.error('❌ Error testing Supabase:', error);
+    }
+    
+    // Initialize mouse gradient effect
+    initMouseGradient();
+    
     const choiceButtons = document.querySelectorAll('.choice-btn');
     choiceButtons.forEach(button => {
         button.addEventListener('keypress', function(e) {
@@ -342,7 +424,7 @@ async function upgradeToStudent() {
         return;
     }
     
-    if (!isEducationalEmail(schoolEmail)) {
+    if (!window.isEducationalEmail(schoolEmail)) {
         schoolEmailInput.placeholder = 'Please use a .edu email';
         schoolEmailInput.style.borderColor = '#ff3b5b';
         setTimeout(() => {
@@ -361,15 +443,27 @@ async function upgradeToStudent() {
     userData.isBetaUser = true;
     
     // Store updated user data in Supabase
-    const result = await storeUserData({
-        email: userData.emails[0].email, // Original email
-        userType: userData.userType,
-        isBetaUser: true,
-        schoolEmail: schoolEmail
-    });
-    
-    if (!result.success) {
-        console.error('Failed to update user data:', result.error);
+    try {
+        console.log('Updating user data with school email:', { 
+            email: userData.emails[0].email, 
+            schoolEmail: schoolEmail 
+        });
+        const result = await window.storeUserData({
+            email: userData.emails[0].email, // Original email
+            userType: userData.userType,
+            isBetaUser: true,
+            schoolEmail: schoolEmail
+        });
+        
+        if (!result.success) {
+            console.error('Failed to update user data:', result.error);
+            // Continue with the flow even if Supabase fails
+        } else {
+            console.log('Successfully updated user data:', result.data);
+        }
+    } catch (error) {
+        console.error('Error updating user data:', error);
+        // Continue with the flow even if Supabase fails
     }
     
     // Show loading
@@ -566,4 +660,61 @@ window.handleSubmit = handleSubmit;
 window.selectChoice = selectChoice;
 window.upgradeToStudent = upgradeToStudent;
 window.closeModal = closeModal;
-window.resetSubmission = resetSubmission; 
+window.resetSubmission = resetSubmission;
+
+// Enhanced mouse gradient effect functions
+function initMouseGradient() {
+    // Enhanced mouse tracking with smooth gradient following (cursor visible)
+    document.addEventListener('mousemove', (e) => {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+        // Removed cursor hiding - keep cursor visible
+    });
+    
+    // Start particles (deferred for performance)
+    setTimeout(() => {
+        initParticles();
+    }, 100);
+}
+
+function initParticles() {
+    const particlesContainer = document.getElementById('particles');
+    if (!particlesContainer) return;
+    
+    // Create initial particles
+    for (let i = 0; i < 30; i++) {
+        setTimeout(() => createEnhancedParticle(), i * 150);
+    }
+}
+
+function createEnhancedParticle() {
+    const particlesContainer = document.getElementById('particles');
+    if (!particlesContainer) return;
+    
+    const particle = document.createElement('div');
+    particle.className = 'particle';
+    
+    const size = Math.random() * 3 + 1;
+    particle.style.width = size + 'px';
+    particle.style.height = size + 'px';
+    particle.style.left = Math.random() * window.innerWidth + 'px';
+    particle.style.top = Math.random() * window.innerHeight + 'px';
+    particle.style.opacity = Math.random() * 0.4 + 0.1;
+    
+    // Add subtle glow effect
+    particle.style.boxShadow = `0 0 ${size * 2}px rgba(255, 255, 255, 0.3)`;
+    particle.style.borderRadius = '50%';
+    
+    const animationDuration = Math.random() * 15 + 8;
+    particle.style.animation = `particleFloat ${animationDuration}s linear infinite`;
+    
+    particlesContainer.appendChild(particle);
+    
+    setTimeout(() => {
+        if (particle.parentNode) {
+            particle.parentNode.removeChild(particle);
+        }
+        // Create replacement particle
+        createEnhancedParticle();
+    }, animationDuration * 1000);
+} 

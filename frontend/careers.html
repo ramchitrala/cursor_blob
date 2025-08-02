@@ -4,7 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Careers - RoomSpot</title>
+    
+    <!-- Performance Optimizations -->
+    <link rel="dns-prefetch" href="//cdn.jsdelivr.net">
+    <link rel="dns-prefetch" href="//hbodtphwaqabbtzkeixl.supabase.co">
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+    <link rel="preload" href="src/styles/styles.css" as="style">
+    <link rel="preload" href="src/assets/logo.png" as="image">
     <link rel="stylesheet" href="src/styles/styles.css">
+    <link rel="stylesheet" href="src/styles/careers-enhanced.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="src/supabase-init.js"></script>
 </head>
 <body>
     <!-- Background Layers -->
@@ -46,12 +56,12 @@
                 </div>
                 
                 <h1>
-                    <span class="gradient-text">Build the future of<br>student housing</span>
+                    <span class="gradient-text">Join RoomSpot</span>
                 </h1>
                 
                 <p class="subtitle">
-                    Join our team of passionate innovators creating affordable,<br>
-                    verified housing solutions for students worldwide.
+                    Help build the platform that connects students with verified housing.<br>
+                    Remote-first • Competitive equity • Impact-driven culture.
                 </p>
             </div>
         </section>
@@ -61,69 +71,17 @@
             <div class="positions-content">
                 <h2 class="section-title">Open Positions</h2>
                 
-                <!-- Sample Position -->
-                <div class="position-card">
-                    <div class="position-header">
-                        <div class="position-info">
-                            <h3 class="position-title">Senior Frontend Engineer</h3>
-                            <div class="position-meta">
-                                <span class="position-type">Full-time</span>
-                                <span class="position-location">Remote / San Francisco</span>
-                                <span class="position-level">Senior Level</span>
-                            </div>
-                        </div>
-                        <div class="position-apply">
-                            <button class="apply-btn" onclick="openApplication()">Apply Now</button>
-                        </div>
-                    </div>
-                    
-                    <div class="position-content">
-                        <div class="position-description">
-                            <h4>About the Role</h4>
-                            <p>We're looking for a senior frontend engineer to help build the next generation of student housing platforms. You'll work on cutting-edge React applications with beautiful animations and seamless user experiences.</p>
-                            
-                            <h4>What You'll Do</h4>
-                            <ul>
-                                <li>Build responsive, animated web applications with React and modern CSS</li>
-                                <li>Collaborate with design and backend teams to create seamless experiences</li>
-                                <li>Optimize performance for 60fps animations and smooth interactions</li>
-                                <li>Implement accessibility best practices and responsive design</li>
-                                <li>Mentor junior developers and contribute to technical decisions</li>
-                            </ul>
-                            
-                            <h4>What We're Looking For</h4>
-                            <ul>
-                                <li>5+ years of experience with React, TypeScript, and modern CSS</li>
-                                <li>Strong understanding of animation libraries and performance optimization</li>
-                                <li>Experience with responsive design and cross-browser compatibility</li>
-                                <li>Passion for creating beautiful, accessible user interfaces</li>
-                                <li>Experience with modern tooling (Vite, Tailwind, etc.)</li>
-                            </ul>
-                            
-                            <h4>Benefits</h4>
-                            <ul>
-                                <li>Competitive salary and equity package</li>
-                                <li>Comprehensive health, dental, and vision insurance</li>
-                                <li>Unlimited PTO and flexible working arrangements</li>
-                                <li>$3K annual learning and development budget</li>
-                                <li>Top-tier equipment and ergonomic home office setup</li>
-                            </ul>
-                        </div>
-                    </div>
+                <!-- Job Listings -->
+                <div id="job-listings">
+                    <!-- Jobs will be loaded dynamically -->
                 </div>
 
-                <!-- Coming Soon Card -->
-                <div class="coming-soon-card">
-                    <div class="coming-soon-content">
-                        <div class="coming-soon-icon">
-                            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                                <circle cx="12" cy="12" r="10"/>
-                                <polyline points="12,6 12,12 16,14"/>
-                            </svg>
-                        </div>
-                        <h3>More Positions Coming Soon</h3>
-                        <p>We're rapidly expanding our team. Check back soon for roles in Backend Engineering, Product Design, and Growth Marketing.</p>
-                        <button class="notify-btn" onclick="openNotifyModal()">Get Notified</button>
+                <!-- Newsletter Signup -->
+                <div class="newsletter-signup">
+                    <div class="newsletter-content">
+                        <h3>Stay Updated</h3>
+                        <p>Get notified when we post new openings that match your interests.</p>
+                        <button class="notify-btn" onclick="openNotifyModal()">Get Job Alerts</button>
                     </div>
                 </div>
             </div>
@@ -180,10 +138,10 @@
 
     <!-- Notify Modal -->
     <div class="modal-overlay" id="notifyModal">
-        <div class="modal" role="dialog" aria-label="Get Notified">
+        <div class="modal" role="dialog" aria-label="Job Alerts">
             <div class="notify-form">
-                <h2>Get Notified About New Positions</h2>
-                <p>Be the first to know when we post new openings!</p>
+                <h2>Job Alerts</h2>
+                <p>Get personalized notifications for roles that match your interests.</p>
                 
                 <form class="notification-form">
                     <div class="form-group">
@@ -235,6 +193,7 @@
         </div>
     </footer>
 
+    <script src="src/performance.js"></script>
     <script src="src/careers.js"></script>
 </body>
 </html> 

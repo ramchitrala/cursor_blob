@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enhanced Debug Test - RoomSpot</title>
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: #0a0a0a;
+            color: #ffffff;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            color: #00ff88;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .test-section {
+            background: #1a1a1a;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid #333;
+        }
+        
+        .test-section h2 {
+            color: #00ff88;
+            margin-top: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .test-button {
+            background: #00ff88;
+            color: #000;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            margin: 5px;
+            transition: all 0.2s;
+        }
+        
+        .test-button:hover {
+            background: #00cc6a;
+            transform: translateY(-2px);
+        }
+        
+        .test-button:disabled {
+            background: #666;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .run-all-btn {
+            background: #ff6b35;
+            color: white;
+            font-size: 18px;
+            padding: 15px 30px;
+            margin: 20px 0;
+        }
+        
+        .console {
+            background: #000;
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 15px;
+            height: 400px;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            margin-top: 15px;
+        }
+        
+        .log-entry {
+            margin-bottom: 8px;
+            padding: 5px;
+            border-radius: 4px;
+        }
+        
+        .log-info { color: #00ff88; }
+        .log-error { color: #ff3b5b; background: rgba(255, 59, 91, 0.1); }
+        .log-warn { color: #ffaa00; }
+        .log-success { color: #00cc6a; }
+        
+        .status-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+        
+        .status-pending { background: #ffaa00; }
+        .status-success { background: #00cc6a; }
+        .status-error { background: #ff3b5b; }
+        
+        .results-summary {
+            background: #1a1a1a;
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 20px;
+            border: 1px solid #333;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #333;
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: #00ff88;
+            transition: width 0.3s ease;
+            width: 0%;
+        }
+        
+        .test-form {
+            background: #1a1a1a;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+            border: 1px solid #333;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #ccc;
+        }
+        
+        .form-group input, .form-group textarea, .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #333;
+            border-radius: 6px;
+            background: #000;
+            color: #fff;
+            font-size: 14px;
+        }
+        
+        .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
+            outline: none;
+            border-color: #00ff88;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔧 Enhanced Debug Test Suite</h1>
+        
+        <div class="test-section">
+            <h2>
+                <span class="status-indicator status-pending" id="overall-status"></span>
+                Overall Status
+            </h2>
+            <button class="test-button run-all-btn" onclick="runAllTests()">🚀 Run All Tests</button>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress-fill"></div>
+            </div>
+            <div id="overall-results"></div>
+        </div>
+        
+        <div class="test-section">
+            <h2>🔌 Connection Tests</h2>
+            <button class="test-button" onclick="testSupabaseConnection()">Test Supabase Connection</button>
+            <button class="test-button" onclick="testAllTables()">Test All Tables</button>
+            <button class="test-button" onclick="testFunctions()">Test Functions</button>
+        </div>
+        
+        <div class="test-section">
+            <h2>📝 Form Tests</h2>
+            <button class="test-button" onclick="testWaitlistForm()">Test Waitlist Form</button>
+            <button class="test-button" onclick="testJobApplication()">Test Job Application</button>
+            <button class="test-button" onclick="testContactForm()">Test Contact Form</button>
+            <button class="test-button" onclick="testJobNotification()">Test Job Notification</button>
+        </div>
+        
+        <div class="test-section">
+            <h2>🧪 Live Form Testing</h2>
+            <div class="test-form">
+                <h3>Waitlist Form Test</h3>
+                <div class="form-group">
+                    <label for="testEmail">Email:</label>
+                    <input type="email" id="testEmail" placeholder="test@example.com" value="test@example.com">
+                </div>
+                <button class="test-button" onclick="testLiveWaitlist()">Test Live Waitlist</button>
+            </div>
+            
+            <div class="test-form">
+                <h3>Job Application Test</h3>
+                <div class="form-group">
+                    <label for="testFirstName">First Name:</label>
+                    <input type="text" id="testFirstName" value="John">
+                </div>
+                <div class="form-group">
+                    <label for="testLastName">Last Name:</label>
+                    <input type="text" id="testLastName" value="Doe">
+                </div>
+                <div class="form-group">
+                    <label for="testJobEmail">Email:</label>
+                    <input type="email" id="testJobEmail" value="john.doe@example.com">
+                </div>
+                <div class="form-group">
+                    <label for="testPosition">Position:</label>
+                    <input type="text" id="testPosition" value="Senior Frontend Engineer">
+                </div>
+                <button class="test-button" onclick="testLiveJobApplication()">Test Live Job Application</button>
+            </div>
+        </div>
+        
+        <div class="console" id="console">
+            <div class="log-entry log-info">🚀 Enhanced Debug Test Suite Ready</div>
+            <div class="log-entry log-info">Click "Run All Tests" to start comprehensive testing</div>
+        </div>
+        
+        <div class="results-summary" id="results-summary" style="display: none;">
+            <h2>📊 Test Results Summary</h2>
+            <div id="summary-content"></div>
+        </div>
+    </div>
+
+    <script src="src/supabase-init.js"></script>
+    <script>
+        let testResults = {
+            connection: { status: 'pending', details: '' },
+            tables: { status: 'pending', details: '' },
+            functions: { status: 'pending', details: '' },
+            waitlist: { status: 'pending', details: '' },
+            jobApplication: { status: 'pending', details: '' },
+            contact: { status: 'pending', details: '' },
+            notification: { status: 'pending', details: '' }
+        };
+        
+        let totalTests = 0;
+        let completedTests = 0;
+        
+        function log(message, type = 'info') {
+            const console = document.getElementById('console');
+            const entry = document.createElement('div');
+            entry.className = `log-entry log-${type}`;
+            entry.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+            console.appendChild(entry);
+            console.scrollTop = console.scrollHeight;
+        }
+        
+        function updateProgress() {
+            const progressFill = document.getElementById('progress-fill');
+            const percentage = totalTests > 0 ? (completedTests / totalTests) * 100 : 0;
+            progressFill.style.width = `${percentage}%`;
+        }
+        
+        function updateOverallStatus() {
+            const statusIndicator = document.getElementById('overall-status');
+            const results = Object.values(testResults);
+            const successCount = results.filter(r => r.status === 'success').length;
+            const errorCount = results.filter(r => r.status === 'error').length;
+            
+            if (errorCount > 0) {
+                statusIndicator.className = 'status-indicator status-error';
+            } else if (successCount === results.length) {
+                statusIndicator.className = 'status-indicator status-success';
+            } else {
+                statusIndicator.className = 'status-indicator status-pending';
+            }
+        }
+        
+        async function testSupabaseConnection() {
+            log('🔌 Testing Supabase connection...', 'info');
+            try {
+                const connected = await window.testSupabaseConnection();
+                if (connected) {
+                    log('✅ Supabase connection successful', 'success');
+                    testResults.connection = { status: 'success', details: 'Connection established' };
+                } else {
+                    log('❌ Supabase connection failed', 'error');
+                    testResults.connection = { status: 'error', details: 'Connection failed' };
+                }
+            } catch (error) {
+                log(`❌ Connection test error: ${error.message}`, 'error');
+                testResults.connection = { status: 'error', details: error.message };
+            }
+            completedTests++;
+            updateProgress();
+            updateOverallStatus();
+        }
+        
+        async function testAllTables() {
+            log('📊 Testing all database tables...', 'info');
+            try {
+                const results = await window.testAllSupabaseFunctions();
+                if (results.connection) {
+                    log('✅ Database connection working', 'success');
+                    let tableStatus = 'success';
+                    let details = [];
+                    
+                    if (results.users_table) {
+                        log('✅ Users table accessible', 'success');
+                        details.push('users: OK');
+                    } else {
+                        log('❌ Users table not accessible', 'error');
+                        details.push('users: FAILED');
+                        tableStatus = 'error';
+                    }
+                    
+                    if (results.job_applications_table) {
+                        log('✅ Job applications table accessible', 'success');
+                        details.push('job_applications: OK');
+                    } else {
+                        log('❌ Job applications table not accessible', 'error');
+                        details.push('job_applications: FAILED');
+                        tableStatus = 'error';
+                    }
+                    
+                    if (results.contact_submissions_table) {
+                        log('✅ Contact submissions table accessible', 'success');
+                        details.push('contact_submissions: OK');
+                    } else {
+                        log('❌ Contact submissions table not accessible', 'error');
+                        details.push('contact_submissions: FAILED');
+                        tableStatus = 'error';
+                    }
+                    
+                    if (results.email_submissions_table) {
+                        log('✅ Email submissions table accessible', 'success');
+                        details.push('email_submissions: OK');
+                    } else {
+                        log('❌ Email submissions table not accessible', 'error');
+                        details.push('email_submissions: FAILED');
+                        tableStatus = 'error';
+                    }
+                    
+                    if (results.job_notifications_table) {
+                        log('✅ Job notifications table accessible', 'success');
+                        details.push('job_notifications: OK');
+                    } else {
+                        log('❌ Job notifications table not accessible', 'error');
+                        details.push('job_notifications: FAILED');
+                        tableStatus = 'error';
+                    }
+                    
+                    testResults.tables = { status: tableStatus, details: details.join(', ') };
+                } else {
+                    log('❌ Database connection failed', 'error');
+                    testResults.tables = { status: 'error', details: 'Connection failed' };
+                }
+            } catch (error) {
+                log(`❌ Table test error: ${error.message}`, 'error');
+                testResults.tables = { status: 'error', details: error.message };
+            }
+            completedTests++;
+            updateProgress();
+            updateOverallStatus();
+        }
+        
+        async function testFunctions() {
+            log('⚙️ Testing Supabase functions...', 'info');
+            try {
+                const supabase = window.initSupabase();
+                if (!supabase) {
+                    throw new Error('Supabase not initialized');
+                }
+                
+                // Test basic functions
+                const testEmail = 'test@example.com';
+                const duplicateCheck = await window.checkDuplicateEmail(testEmail, 'waitlist');
+                
+                if (duplicateCheck.success !== undefined) {
+                    log('✅ checkDuplicateEmail function working', 'success');
+                    testResults.functions = { status: 'success', details: 'Functions accessible' };
+                } else {
+                    log('❌ checkDuplicateEmail function failed', 'error');
+                    testResults.functions = { status: 'error', details: 'Function test failed' };
+                }
+            } catch (error) {
+                log(`❌ Function test error: ${error.message}`, 'error');
+                testResults.functions = { status: 'error', details: error.message };
+            }
+            completedTests++;
+            updateProgress();
+            updateOverallStatus();
+        }
+        
+        async function testWaitlistForm() {
+            log('📝 Testing waitlist form functionality...', 'info');
+            try {
+                const testData = {
+                    email: 'waitlist-test@example.com',
+                    userType: 'student',
+                    isBetaUser: true,
+                    schoolEmail: null
+                };
+                
+                const result = await window.storeUserData(testData);
+                
+                if (result.success) {
+                    log('✅ Waitlist form submission successful', 'success');
+                    testResults.waitlist = { status: 'success', details: 'Form submission working' };
+                } else {
+                    log(`❌ Waitlist form submission failed: ${result.error}`, 'error');
+                    testResults.waitlist = { status: 'error', details: result.error };
+                }
+            } catch (error) {
+                log(`❌ Waitlist test error: ${error.message}`, 'error');
+                testResults.waitlist = { status: 'error', details: error.message };
+            }
+            completedTests++;
+            updateProgress();
+            updateOverallStatus();
+        }
+        
+        async function testJobApplication() {
+            log('💼 Testing job application functionality...', 'info');
+            try {
+                const testData = {
+                    first_name: 'Test',
+                    last_name: 'User',
+                    email: 'job-test@example.com',
+                    position: 'Senior Frontend Engineer',
+                    experience: 'Test experience'
+                };
+                
+                const result = await window.submitEnhancedJobApplication(testData);
+                
+                if (result.success) {
+                    log('✅ Job application submission successful', 'success');
+                    testResults.jobApplication = { status: 'success', details: 'Application submission working' };
+                } else {
+                    log(`❌ Job application submission failed: ${result.error}`, 'error');
+                    testResults.jobApplication = { status: 'error', details: result.error };
+                }
+            } catch (error) {
+                log(`❌ Job application test error: ${error.message}`, 'error');
+                testResults.jobApplication = { status: 'error', details: error.message };
+            }
+            completedTests++;
+            updateProgress();
+            updateOverallStatus();
+        }
+        
+        async function testContactForm() {
+            log('📞 Testing contact form functionality...', 'info');
+            try {
+                const testData = {
+                    name: 'Test Contact',
+                    email: 'contact-test@example.com',
+                    message: 'Test contact message',
+                    contact_type: 'general'
+                };
+                
+                const result = await window.submitEnhancedContactForm(testData);
+                
+                if (result.success) {
+                    log('✅ Contact form submission successful', 'success');
+                    testResults.contact = { status: 'success', details: 'Contact form working' };
+                } else {
+                    log(`❌ Contact form submission failed: ${result.error}`, 'error');
+                    testResults.contact = { status: 'error', details: result.error };
+                }
+            } catch (error) {
+                log(`❌ Contact form test error: ${error.message}`, 'error');
+                testResults.contact = { status: 'error', details: error.message };
+            }
+            completedTests++;
+            updateProgress();
+            updateOverallStatus();
+        }
+        
+        async function testJobNotification() {
+            log('🔔 Testing job notification functionality...', 'info');
+            try {
+                const result = await window.submitJobNotification('notification-test@example.com', 'Engineering');
+                
+                if (result.success) {
+                    log('✅ Job notification subscription successful', 'success');
+                    testResults.notification = { status: 'success', details: 'Notification subscription working' };
+                } else {
+                    log(`❌ Job notification subscription failed: ${result.error}`, 'error');
+                    testResults.notification = { status: 'error', details: result.error };
+                }
+            } catch (error) {
+                log(`❌ Job notification test error: ${error.message}`, 'error');
+                testResults.notification = { status: 'error', details: error.message };
+            }
+            completedTests++;
+            updateProgress();
+            updateOverallStatus();
+        }
+        
+        async function testLiveWaitlist() {
+            const email = document.getElementById('testEmail').value;
+            log(`🧪 Testing live waitlist with email: ${email}`, 'info');
+            
+            try {
+                const result = await window.storeUserData({
+                    email: email,
+                    userType: 'student',
+                    isBetaUser: true,
+                    schoolEmail: null
+                });
+                
+                if (result.success) {
+                    log(`✅ Live waitlist test successful for ${email}`, 'success');
+                } else {
+                    log(`❌ Live waitlist test failed: ${result.error}`, 'error');
+                }
+            } catch (error) {
+                log(`❌ Live waitlist test error: ${error.message}`, 'error');
+            }
+        }
+        
+        async function testLiveJobApplication() {
+            const firstName = document.getElementById('testFirstName').value;
+            const lastName = document.getElementById('testLastName').value;
+            const email = document.getElementById('testJobEmail').value;
+            const position = document.getElementById('testPosition').value;
+            
+            log(`🧪 Testing live job application for ${firstName} ${lastName}`, 'info');
+            
+            try {
+                const result = await window.submitEnhancedJobApplication({
+                    first_name: firstName,
+                    last_name: lastName,
+                    email: email,
+                    position: position,
+                    experience: 'Live test experience'
+                });
+                
+                if (result.success) {
+                    log(`✅ Live job application test successful for ${email}`, 'success');
+                } else {
+                    log(`❌ Live job application test failed: ${result.error}`, 'error');
+                }
+            } catch (error) {
+                log(`❌ Live job application test error: ${error.message}`, 'error');
+            }
+        }
+        
+        async function runAllTests() {
+            log('🚀 Starting comprehensive test suite...', 'info');
+            
+            // Reset results
+            testResults = {
+                connection: { status: 'pending', details: '' },
+                tables: { status: 'pending', details: '' },
+                functions: { status: 'pending', details: '' },
+                waitlist: { status: 'pending', details: '' },
+                jobApplication: { status: 'pending', details: '' },
+                contact: { status: 'pending', details: '' },
+                notification: { status: 'pending', details: '' }
+            };
+            
+            totalTests = 7;
+            completedTests = 0;
+            updateProgress();
+            updateOverallStatus();
+            
+            // Run tests sequentially
+            await testSupabaseConnection();
+            await testAllTables();
+            await testFunctions();
+            await testWaitlistForm();
+            await testJobApplication();
+            await testContactForm();
+            await testJobNotification();
+            
+            // Show results summary
+            showResultsSummary();
+            
+            log('🎉 All tests completed!', 'success');
+        }
+        
+        function showResultsSummary() {
+            const summaryDiv = document.getElementById('results-summary');
+            const summaryContent = document.getElementById('summary-content');
+            
+            let html = '<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">';
+            
+            Object.entries(testResults).forEach(([test, result]) => {
+                const statusColor = result.status === 'success' ? '#00cc6a' : 
+                                   result.status === 'error' ? '#ff3b5b' : '#ffaa00';
+                const statusText = result.status === 'success' ? '✅ PASS' : 
+                                  result.status === 'error' ? '❌ FAIL' : '⏳ PENDING';
+                
+                html += `
+                    <div style="background: #000; padding: 15px; border-radius: 8px; border-left: 4px solid ${statusColor};">
+                        <h3 style="margin: 0 0 10px 0; color: ${statusColor};">${test.charAt(0).toUpperCase() + test.slice(1)}</h3>
+                        <div style="font-weight: bold; margin-bottom: 5px;">${statusText}</div>
+                        <div style="font-size: 12px; color: #ccc;">${result.details || 'No details'}</div>
+                    </div>
+                `;
+            });
+            
+            html += '</div>';
+            summaryContent.innerHTML = html;
+            summaryDiv.style.display = 'block';
+        }
+        
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            log('🔧 Enhanced Debug Test Suite initialized', 'info');
+            log('📋 Ready to run comprehensive tests', 'info');
+        });
+    </script>
+</body>
+</html> 

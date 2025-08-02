@@ -1,3 +1,5 @@
+// Supabase functions are loaded globally via supabase-init.js
+
 // Reuse main page background animations
 let mouseX = 0, mouseY = 0;
 let rafId = null;
@@ -32,6 +34,100 @@ document.addEventListener('mousemove', (e) => {
         });
     }
 });
+
+// Smart contact form updates based on inquiry type
+function updateContactForm() {
+    const contactType = document.getElementById('contactType').value;
+    const dynamicFields = document.getElementById('dynamicFields');
+    
+    if (!dynamicFields) return;
+    
+    let additionalFields = '';
+    
+    switch (contactType) {
+        case 'media':
+            additionalFields = `
+                <div class="form-group">
+                    <label for="company">Media Organization *</label>
+                    <input type="text" id="company" name="company" placeholder="e.g., TechCrunch, The New York Times" required>
+                </div>
+                <div class="form-group">
+                    <label for="phone">Phone Number</label>
+                    <input type="tel" id="phone" name="phone" placeholder="+1 (555) 123-4567">
+                </div>
+                <div class="form-group">
+                    <label for="preferredContact">Preferred Contact Method</label>
+                    <select id="preferredContact" name="preferredContact">
+                        <option value="email">Email</option>
+                        <option value="phone">Phone</option>
+                        <option value="either">Either</option>
+                    </select>
+                </div>
+            `;
+            break;
+            
+        case 'business':
+        case 'partnership':
+            additionalFields = `
+                <div class="form-group">
+                    <label for="company">Company/Organization *</label>
+                    <input type="text" id="company" name="company" placeholder="Your company name" required>
+                </div>
+                <div class="form-group">
+                    <label for="phone">Phone Number</label>
+                    <input type="tel" id="phone" name="phone" placeholder="+1 (555) 123-4567">
+                </div>
+            `;
+            break;
+            
+        case 'vc':
+            additionalFields = `
+                <div class="form-group">
+                    <label for="company">Investment Firm *</label>
+                    <input type="text" id="company" name="company" placeholder="e.g., Andreessen Horowitz, Sequoia Capital" required>
+                </div>
+                <div class="form-group">
+                    <label for="phone">Phone Number</label>
+                    <input type="tel" id="phone" name="phone" placeholder="+1 (555) 123-4567">
+                </div>
+                <div class="form-group">
+                    <label for="preferredContact">Preferred Contact Method</label>
+                    <select id="preferredContact" name="preferredContact">
+                        <option value="email">Email</option>
+                        <option value="phone">Phone</option>
+                        <option value="either">Either</option>
+                    </select>
+                </div>
+            `;
+            break;
+            
+        case 'support':
+            additionalFields = `
+                <div class="form-group">
+                    <label for="phone">Phone Number (Optional)</label>
+                    <input type="tel" id="phone" name="phone" placeholder="+1 (555) 123-4567">
+                </div>
+                <div class="form-group">
+                    <label for="urgency">Issue Urgency</label>
+                    <select id="urgency" name="urgency">
+                        <option value="low">Low - General question</option>
+                        <option value="normal">Normal - Need help</option>
+                        <option value="high">High - Blocking issue</option>
+                        <option value="urgent">Urgent - Critical problem</option>
+                    </select>
+                </div>
+            `;
+            break;
+            
+        default:
+            additionalFields = '';
+    }
+    
+    dynamicFields.innerHTML = additionalFields;
+}
+
+// Global function for HTML
+window.updateContactForm = updateContactForm;
 
 // Create floating particles
 const particlePool = [];
@@ -77,11 +173,10 @@ document.addEventListener('DOMContentLoaded', function() {
     const contactForm = document.getElementById('contactForm');
     
     if (contactForm) {
-        contactForm.addEventListener('submit', function(e) {
+        contactForm.addEventListener('submit', async function(e) {
             e.preventDefault();
             
             const submitBtn = this.querySelector('.submit-contact-btn');
-            const originalText = submitBtn.textContent;
             
             // Show loading state
             submitBtn.disabled = true;
@@ -89,9 +184,37 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // Get form data
             const formData = new FormData(this);
-            const data = Object.fromEntries(formData);
+            const contactData = {
+                first_name: formData.get('firstName'),
+                last_name: formData.get('lastName'),
+                email: formData.get('email'),
+                message: formData.get('message')
+            };
             
-            // Simulate API call
+            // Enhanced contact data with categorization
+            const enhancedContactData = {
+                first_name: formData.get('firstName'),
+                last_name: formData.get('lastName'),
+                email: formData.get('email'),
+                message: formData.get('message'),
+                contact_type: formData.get('contactType'),
+                company: formData.get('company') || null,
+                phone: formData.get('phone') || null,
+                preferred_contact: formData.get('preferredContact') || 'email'
+            };
+            
+            // Submit to Supabase with enhanced data
+            const result = await window.submitEnhancedContactForm(enhancedContactData);
+            
+            if (!result.success) {
+                console.error('Failed to submit contact form:', result.error);
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = 'Send Message';
+                alert('Failed to send message. Please try again.');
+                return;
+            }
+            
+            // Simulate API call delay for UX
             setTimeout(() => {
                 // Show success message
                 const formSection = document.querySelector('.contact-form-section');
@@ -111,8 +234,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 `;
                 
                 // Log the contact form submission
-                console.log('Contact form submission:', data);
-            }, 2000);
+                console.log('Contact form submission:', contactData);
+            }, 1000);
         });
     }
     

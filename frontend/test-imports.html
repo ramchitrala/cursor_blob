@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Import Test - RoomSpot</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #0a0a0a;
+            color: #ffffff;
+        }
+        .test-section {
+            background: #1a1a1a;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            border: 1px solid #333;
+        }
+        .success { color: #4ade80; }
+        .error { color: #f87171; }
+        .info { color: #60a5fa; }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+    <h1>🧪 Import Test - RoomSpot</h1>
+    
+    <div class="test-section">
+        <h2>Testing Script Loading</h2>
+        <div id="results">
+            <p class="info">Testing script loading...</p>
+        </div>
+    </div>
+
+    <script src="src/supabase-init.js"></script>
+    <script src="src/performance.js"></script>
+    <script src="src/main.js"></script>
+    <script src="src/contact.js"></script>
+    <script src="src/careers.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const results = document.getElementById('results');
+            let testResults = [];
+            
+            // Test 1: Check if Supabase is loaded
+            if (typeof window.supabase !== 'undefined') {
+                testResults.push('<p class="success">✅ Supabase CDN loaded successfully</p>');
+            } else {
+                testResults.push('<p class="error">❌ Supabase CDN failed to load</p>');
+            }
+            
+            // Test 2: Check if global functions are available
+            const requiredFunctions = [
+                'initSupabase',
+                'isEducationalEmail',
+                'storeUserData',
+                'submitEnhancedJobApplication',
+                'submitEnhancedContactForm',
+                'submitJobNotification',
+                'checkDuplicateEmail',
+                'testSupabaseConnection'
+            ];
+            
+            let missingFunctions = [];
+            requiredFunctions.forEach(func => {
+                if (typeof window[func] === 'function') {
+                    testResults.push(`<p class="success">✅ ${func} function available</p>`);
+                } else {
+                    missingFunctions.push(func);
+                    testResults.push(`<p class="error">❌ ${func} function missing</p>`);
+                }
+            });
+            
+            // Test 3: Check if main.js functions are available
+            if (typeof handleSubmit === 'function') {
+                testResults.push('<p class="success">✅ main.js functions loaded</p>');
+            } else {
+                testResults.push('<p class="error">❌ main.js functions not available</p>');
+            }
+            
+            // Test 4: Check if contact.js functions are available
+            if (typeof updateContactForm === 'function') {
+                testResults.push('<p class="success">✅ contact.js functions loaded</p>');
+            } else {
+                testResults.push('<p class="error">❌ contact.js functions not available</p>');
+            }
+            
+            // Test 5: Check if careers.js functions are available
+            if (typeof openApplication === 'function') {
+                testResults.push('<p class="success">✅ careers.js functions loaded</p>');
+            } else {
+                testResults.push('<p class="error">❌ careers.js functions not available</p>');
+            }
+            
+            // Display results
+            results.innerHTML = testResults.join('');
+            
+            // Summary
+            const totalTests = requiredFunctions.length + 3; // +3 for main, contact, careers
+            const passedTests = testResults.filter(r => r.includes('✅')).length;
+            
+            results.innerHTML += `
+                <div style="margin-top: 20px; padding: 15px; background: ${passedTests === totalTests ? '#1a472a' : '#4a1a1a'}; border-radius: 4px;">
+                    <h3>Test Summary</h3>
+                    <p>Passed: ${passedTests}/${totalTests} tests</p>
+                    ${passedTests === totalTests ? 
+                        '<p class="success">🎉 All tests passed! Import issues resolved.</p>' : 
+                        '<p class="error">⚠️ Some tests failed. Check console for details.</p>'
+                    }
+                </div>
+            `;
+            
+            console.log('🧪 Import Test Results:', {
+                supabaseLoaded: typeof window.supabase !== 'undefined',
+                functionsAvailable: requiredFunctions.filter(f => typeof window[f] === 'function'),
+                missingFunctions: missingFunctions
+            });
+        });
+    </script>
+</body>
+</html> 

@@ -4,7 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Contact Us - RoomSpot</title>
+    
+    <!-- Performance Optimizations -->
+    <link rel="dns-prefetch" href="//cdn.jsdelivr.net">
+    <link rel="dns-prefetch" href="//hbodtphwaqabbtzkeixl.supabase.co">
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+    <link rel="preload" href="src/styles/styles.css" as="style">
+    <link rel="preload" href="src/assets/logo.png" as="image">
     <link rel="stylesheet" href="src/styles/styles.css">
+    <link rel="stylesheet" href="src/styles/careers-enhanced.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
     <!-- Background Layers -->
@@ -66,16 +75,25 @@
                             </div>
                             
                             <div class="form-group">
-                                <label for="subject">Subject</label>
-                                <select id="subject" name="subject" required>
-                                    <option value="">Select a topic</option>
+                                <label for="contactType">Type of Inquiry *</label>
+                                <select id="contactType" name="contactType" required onchange="updateContactForm()">
+                                    <option value="">Select inquiry type</option>
                                     <option value="general">General Inquiry</option>
-                                    <option value="beta-access">Beta Access Request</option>
-                                    <option value="partnership">Partnership Opportunity</option>
+                                    <option value="media">Media Inquiry</option>
+                                    <option value="business">Business Partnership</option>
+                                    <option value="vc">Investment/VC Inquiry</option>
+                                    <option value="partnership">University Partnership</option>
                                     <option value="support">Technical Support</option>
-                                    <option value="feedback">Feedback</option>
-                                    <option value="other">Other</option>
+                                    <option value="feedback">Product Feedback</option>
                                 </select>
+                            </div>
+                            
+                            <!-- Dynamic fields based on contact type -->
+                            <div id="dynamicFields"></div>
+                            
+                            <div class="form-group">
+                                <label for="subject">Subject *</label>
+                                <input type="text" id="subject" name="subject" required placeholder="Brief description of your inquiry">
                             </div>
                             
                             <div class="form-group">
@@ -194,6 +212,8 @@
         </footer>
     </div>
 
+    <script src="src/supabase-init.js"></script>
+    <script src="src/performance.js"></script>
     <script src="src/contact.js"></script>
 </body>
 </html> 

@@ -4,7 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>RoomSpot - Join the Beta</title>
+    
+    <!-- Performance Optimizations -->
+    <link rel="dns-prefetch" href="//cdn.jsdelivr.net">
+    <link rel="dns-prefetch" href="//hbodtphwaqabbtzkeixl.supabase.co">
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+    <link rel="preload" href="src/styles/styles.css" as="style">
+    <link rel="preload" href="src/assets/logo.png" as="image">
     <link rel="stylesheet" href="src/styles/styles.css">
+    <link rel="stylesheet" href="src/styles/careers-enhanced.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="src/supabase-init.js"></script>
 </head>
 <body>
     <!-- Background Layers -->
@@ -196,6 +206,7 @@
         </div>
     </div>
 
+    <script src="src/performance.js"></script>
     <script src="src/main.js"></script>
 </body>
 </html> 

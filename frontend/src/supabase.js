@@ -1,10 +1,28 @@
 // RoomSpot Supabase Client Configuration
-import { createClient } from '@supabase/supabase-js'
+// Support both ES6 modules and CDN/UMD
+let supabase;
 
-const supabaseUrl = 'https://hbodtphwaqabbtzkeixl.supabase.co'
-const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imhib2R0cGh3YXFhYmJ0emtlaXhsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQwOTgyNjAsImV4cCI6MjA2OTY3NDI2MH0.DtrQYFjJ6dY70U0rvhee7GF6gQnDQSimvYp9e2gVsGQ'
+if (typeof window !== 'undefined' && window.supabase) {
+    // CDN version
+    const { createClient } = window.supabase;
+    supabase = createClient(
+        'https://hbodtphwaqabbtzkeixl.supabase.co',
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imhib2R0cGh3YXFhYmJ0emtlaXhsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQwOTgyNjAsImV4cCI6MjA2OTY3NDI2MH0.DtrQYFjJ6dY70U0rvhee7GF6gQnDQSimvYp9e2gVsGQ'
+    );
+} else {
+    // ES6 module version
+    try {
+        const { createClient } = await import('@supabase/supabase-js');
+        supabase = createClient(
+            'https://hbodtphwaqabbtzkeixl.supabase.co',
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imhib2R0cGh3YXFhYmJ0emtlaXhsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQwOTgyNjAsImV4cCI6MjA2OTY3NDI2MH0.DtrQYFjJ6dY70U0rvhee7GF6gQnDQSimvYp9e2gVsGQ'
+        );
+    } catch (error) {
+        console.error('Failed to load Supabase module:', error);
+    }
+}
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey)
+export { supabase };
 
 // Utility functions for RoomSpot operations
 

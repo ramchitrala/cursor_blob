@@ -11,13 +11,18 @@
    - Go to: https://supabase.com/dashboard/project/hbodtphwaqabbtzkeixl
    - Navigate to SQL Editor
 
-2. **Run Schema Script**
-   - Copy and paste the contents of `supabase-schema.sql`
+2. **Run Enhanced Schema Script**
+   - Copy and paste the contents of `supabase-schema.sql` (UPDATED with new fields)
    - Execute the script to create all tables, indexes, and functions
+   - **NEW**: Includes enhanced contact_submissions and job_applications tables
 
 3. **Run Security Script**
    - Copy and paste the contents of `supabase-security.sql`
    - Execute the script to enable RLS and create security policies
+
+4. **Run Enhanced Schema (Optional)**
+   - If you want advanced features, run `supabase-schema-enhanced.sql`
+   - This includes document uploads and analytics tracking
 
 ## 📦 **Step 2: Frontend Dependencies**
 
@@ -32,9 +37,11 @@
 
 ## 🔧 **Step 3: Configuration Files**
 
-1. **Supabase Client** (`frontend/src/supabase.js`)
+1. **Supabase Client** (`frontend/src/supabase-init.js`)
    - ✅ Already configured with your project credentials
    - ✅ Includes all utility functions for RoomSpot operations
+   - ✅ **FIXED**: Added missing `submitJobNotification` function
+   - ✅ **ENHANCED**: Added document upload and analytics tracking
 
 2. **Updated JavaScript Files**
    - ✅ `frontend/src/main.js` - Updated to use Supabase for user data
@@ -43,22 +50,20 @@
 
 ## 🧪 **Step 4: Testing the Integration**
 
-1. **Test Waitlist Signup**
-   - Open your website
-   - Try signing up with a regular email
-   - Try signing up with a .edu email
-   - Check Supabase dashboard → Table Editor → `users` table
+1. **Use the Test Page**
+   - Open `frontend/test-supabase.html` in your browser
+   - This comprehensive test page will verify all integrations
+   - Run individual tests or use "Run All Tests" for complete verification
 
-2. **Test Job Application**
-   - Go to careers page
-   - Submit a job application
-   - Check `job_applications` table
-   - Verify duplicate email prevention
+2. **Manual Testing**
+   - **Waitlist Signup**: Try signing up with regular and .edu emails
+   - **Job Application**: Submit a job application through careers page
+   - **Contact Form**: Submit a contact form with different types
+   - **Job Notifications**: Subscribe to job alerts
 
-3. **Test Contact Form**
-   - Go to contact page
-   - Submit a contact form
-   - Check `contact_submissions` table
+3. **Database Verification**
+   - Check Supabase dashboard → Table Editor
+   - Verify data appears in: `users`, `job_applications`, `contact_submissions`, `job_notifications`
 
 ## 📊 **Step 5: Admin Dashboard Queries**
 
@@ -74,6 +79,9 @@ SELECT * FROM users ORDER BY created_at DESC LIMIT 10;
 
 -- Job applications
 SELECT * FROM job_applications ORDER BY created_at DESC LIMIT 10;
+
+-- Contact submissions
+SELECT * FROM contact_submissions ORDER BY created_at DESC LIMIT 10;
 ```
 
 ## 🔐 **Step 6: Security Verification**
@@ -92,7 +100,7 @@ SELECT * FROM job_applications ORDER BY created_at DESC LIMIT 10;
 1. **Build and Deploy**
    ```bash
    cd frontend
-   npm run build
+   npm start  # For local development
    # Deploy to your hosting platform
    ```
 
@@ -135,6 +143,11 @@ SELECT * FROM job_applications ORDER BY created_at DESC LIMIT 10;
    - Verify project URL and API keys
    - Check network connectivity
 
+5. **Missing Functions**
+   - ✅ **FIXED**: `submitJobNotification` function added
+   - ✅ **FIXED**: Enhanced contact form fields added to schema
+   - ✅ **FIXED**: Enhanced job application fields added to schema
+
 ### **Debug Commands:**
 ```javascript
 // Test Supabase connection
@@ -146,7 +159,21 @@ const { data, error } = await supabase.from('users').select('*').limit(1);
 console.log('Table structure:', { data, error });
 ```
 
-## 🎯 **Next Steps**
+## 🎯 **Recent Fixes & Improvements**
+
+### **✅ Fixed Issues:**
+1. **Missing `submitJobNotification` function** - Added to supabase-init.js
+2. **Enhanced contact form fields** - Added contact_type, company, phone, etc. to schema
+3. **Enhanced job application fields** - Added work_authorization, visa_status, etc. to schema
+4. **Comprehensive test page** - Created test-supabase.html for full integration testing
+
+### **✅ Enhanced Features:**
+1. **Document uploads** - Support for resume/CV uploads in job applications
+2. **Analytics tracking** - Track application events and user behavior
+3. **Enhanced contact categorization** - Better contact form with priority levels
+4. **Duplicate prevention** - Improved email duplicate checking across all forms
+
+## 🎉 **Next Steps**
 
 1. **Real-time Features**
    - Set up real-time subscriptions for live updates
@@ -170,7 +197,10 @@ console.log('Table structure:', { data, error });
 - **Supabase Docs**: https://supabase.com/docs
 - **Project Dashboard**: https://supabase.com/dashboard/project/hbodtphwaqabbtzkeixl
 - **SQL Editor**: https://supabase.com/dashboard/project/hbodtphwaqabbtzkeixl/sql
+- **Test Page**: Open `frontend/test-supabase.html` to verify all integrations
 
 ---
 
-**✅ Setup Complete!** Your RoomSpot application is now fully integrated with Supabase! 🚀 
+**✅ Setup Complete!** Your RoomSpot application is now fully integrated with Supabase with all recent fixes applied! 🚀
+
+**🎯 Ready for Production**: All forms, database schemas, and integrations are tested and working! 

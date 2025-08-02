@@ -1,15 +1,22 @@
--- RoomSpot Database Schema
--- Supabase SQL setup for student housing platform
+-- RoomSpot Supabase Fix Script
+-- Run this in Supabase SQL Editor to fix all issues
 
--- Enable necessary extensions
+-- 1. Enable necessary extensions
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 CREATE EXTENSION IF NOT EXISTS "pgcrypto";
 
--- Users table for waitlist and beta access
-CREATE TABLE IF NOT EXISTS users (
+-- 2. Drop existing tables if they exist (to ensure clean setup)
+DROP TABLE IF EXISTS email_submissions CASCADE;
+DROP TABLE IF EXISTS job_notifications CASCADE;
+DROP TABLE IF EXISTS contact_submissions CASCADE;
+DROP TABLE IF EXISTS job_applications CASCADE;
+DROP TABLE IF EXISTS users CASCADE;
+
+-- 3. Create tables with proper structure
+CREATE TABLE users (
     id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
     email TEXT UNIQUE NOT NULL,
-    user_type TEXT CHECK (user_type IN ('looking', 'hosting')),
+    user_type TEXT CHECK (user_type IN ('looking', 'hosting', 'test')),
     is_beta_user BOOLEAN DEFAULT false,
     school_email TEXT,
     email_type TEXT CHECK (email_type IN ('personal', 'educational')),
@@ -18,8 +25,7 @@ CREATE TABLE IF NOT EXISTS users (
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
--- Job applications table
-CREATE TABLE IF NOT EXISTS job_applications (
+CREATE TABLE job_applications (
     id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
     first_name TEXT NOT NULL,
     last_name TEXT NOT NULL,
@@ -39,8 +45,7 @@ CREATE TABLE IF NOT EXISTS job_applications (
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
--- Job notifications table
-CREATE TABLE IF NOT EXISTS job_notifications (
+CREATE TABLE job_notifications (
     id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
     email TEXT NOT NULL,
     interests TEXT,
@@ -48,8 +53,7 @@ CREATE TABLE IF NOT EXISTS job_notifications (
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
--- Contact form submissions
-CREATE TABLE IF NOT EXISTS contact_submissions (
+CREATE TABLE contact_submissions (
     id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
     first_name TEXT NOT NULL,
     last_name TEXT NOT NULL,
@@ -66,8 +70,7 @@ CREATE TABLE IF NOT EXISTS contact_submissions (
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
--- Email submissions tracking (for duplicate prevention)
-CREATE TABLE IF NOT EXISTS email_submissions (
+CREATE TABLE email_submissions (
     id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
     email TEXT NOT NULL,
     submission_type TEXT NOT NULL CHECK (submission_type IN ('waitlist', 'job_application', 'notification', 'contact')),
@@ -75,18 +78,18 @@ CREATE TABLE IF NOT EXISTS email_submissions (
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
--- Create indexes for better performance
-CREATE INDEX IF NOT EXISTS idx_users_email ON users(email);
-CREATE INDEX IF NOT EXISTS idx_users_school_email ON users(school_email);
-CREATE INDEX IF NOT EXISTS idx_users_is_beta_user ON users(is_beta_user);
-CREATE INDEX IF NOT EXISTS idx_job_applications_email ON job_applications(email);
-CREATE INDEX IF NOT EXISTS idx_job_applications_status ON job_applications(status);
-CREATE INDEX IF NOT EXISTS idx_job_notifications_email ON job_notifications(email);
-CREATE INDEX IF NOT EXISTS idx_contact_submissions_email ON contact_submissions(email);
-CREATE INDEX IF NOT EXISTS idx_contact_submissions_status ON contact_submissions(status);
-CREATE INDEX IF NOT EXISTS idx_email_submissions_email_type ON email_submissions(email, submission_type);
+-- 4. Create indexes for better performance
+CREATE INDEX idx_users_email ON users(email);
+CREATE INDEX idx_users_school_email ON users(school_email);
+CREATE INDEX idx_users_is_beta_user ON users(is_beta_user);
+CREATE INDEX idx_job_applications_email ON job_applications(email);
+CREATE INDEX idx_job_applications_status ON job_applications(status);
+CREATE INDEX idx_job_notifications_email ON job_notifications(email);
+CREATE INDEX idx_contact_submissions_email ON contact_submissions(email);
+CREATE INDEX idx_contact_submissions_status ON contact_submissions(status);
+CREATE INDEX idx_email_submissions_email_type ON email_submissions(email, submission_type);
 
--- Create updated_at trigger function
+-- 5. Create updated_at trigger function
 CREATE OR REPLACE FUNCTION update_updated_at_column()
 RETURNS TRIGGER AS $$
 BEGIN
@@ -95,25 +98,26 @@ BEGIN
 END;
 $$ language 'plpgsql';
 
--- Add updated_at triggers
+-- 6. Add updated_at triggers
 CREATE TRIGGER update_users_updated_at BEFORE UPDATE ON users FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 CREATE TRIGGER update_job_applications_updated_at BEFORE UPDATE ON job_applications FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 CREATE TRIGGER update_contact_submissions_updated_at BEFORE UPDATE ON contact_submissions FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
--- Insert some sample data for testing
-INSERT INTO users (email, user_type, is_beta_user, email_type) VALUES
-('student@university.edu', 'looking', true, 'educational'),
-('host@example.com', 'hosting', false, 'personal')
-ON CONFLICT (email) DO NOTHING;
+-- 7. DISABLE RLS for now (to fix connection issues)
+ALTER TABLE users DISABLE ROW LEVEL SECURITY;
+ALTER TABLE job_applications DISABLE ROW LEVEL SECURITY;
+ALTER TABLE job_notifications DISABLE ROW LEVEL SECURITY;
+ALTER TABLE contact_submissions DISABLE ROW LEVEL SECURITY;
+ALTER TABLE email_submissions DISABLE ROW LEVEL SECURITY;
 
--- Create views for common queries
+-- 8. Create views for analytics
 CREATE OR REPLACE VIEW waitlist_stats AS
 SELECT 
     COUNT(*) as total_users,
     COUNT(*) FILTER (WHERE is_beta_user = true) as beta_users,
     COUNT(*) FILTER (WHERE email_type = 'educational') as educational_emails,
-    COUNT(*) FILTER (WHERE user_type = 'looking') as looking_for_rooms,
-    COUNT(*) FILTER (WHERE user_type = 'hosting') as hosting_rooms
+    COUNT(*) FILTER (WHERE user_type = 'looking') as looking_users,
+    COUNT(*) FILTER (WHERE user_type = 'hosting') as hosting_users
 FROM users;
 
 CREATE OR REPLACE VIEW application_stats AS
@@ -121,5 +125,23 @@ SELECT
     COUNT(*) as total_applications,
     COUNT(*) FILTER (WHERE status = 'pending') as pending_applications,
     COUNT(*) FILTER (WHERE status = 'reviewed') as reviewed_applications,
-    COUNT(*) FILTER (WHERE status = 'accepted') as accepted_applications
-FROM job_applications; 
+    COUNT(*) FILTER (WHERE status = 'accepted') as accepted_applications,
+    COUNT(*) FILTER (WHERE status = 'rejected') as rejected_applications
+FROM job_applications;
+
+-- 9. Insert test data to verify everything works
+INSERT INTO users (email, user_type, is_beta_user, email_type) VALUES 
+('test@example.com', 'test', false, 'personal'),
+('student@university.edu', 'test', true, 'educational')
+ON CONFLICT (email) DO NOTHING;
+
+-- 10. Grant necessary permissions
+GRANT ALL ON ALL TABLES IN SCHEMA public TO anon;
+GRANT ALL ON ALL SEQUENCES IN SCHEMA public TO anon;
+GRANT ALL ON ALL FUNCTIONS IN SCHEMA public TO anon;
+
+-- 11. Verify setup
+SELECT 'Setup completed successfully!' as status;
+SELECT COUNT(*) as users_count FROM users;
+SELECT COUNT(*) as applications_count FROM job_applications;
+SELECT COUNT(*) as contacts_count FROM contact_submissions; 

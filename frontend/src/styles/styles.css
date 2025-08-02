@@ -40,9 +40,13 @@ body {
     font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", sans-serif;
     background: var(--bg);
     color: var(--primary);
-    height: 100vh;
-    overflow: hidden;
+    min-height: 100vh;
+    max-height: 100vh;
+    overflow-y: auto;
+    overflow-x: hidden;
     position: relative;
+    margin: 0;
+    padding: 0;
 }
 
 /* Animated Background Layers */
@@ -147,9 +151,11 @@ body {
 .main-container {
     position: relative;
     z-index: 1;
-    height: 100vh;
+    min-height: 100vh;
+    max-height: 100vh;
     display: flex;
     flex-direction: column;
+    overflow: hidden;
 }
 
 /* Header */
@@ -255,21 +261,24 @@ header {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: clamp(12px, 2vh, 24px) clamp(16px, 3vw, 24px);
+    padding: clamp(12px, 2vh, 24px) clamp(20px, 4vw, 32px);
     text-align: center;
-    height: calc(100vh - 120px);
+    min-height: calc(70vh - 120px);
+    width: 100%;
+    position: relative;
 }
 
 .hero-content {
-    max-width: min(840px, 90vw);
+    max-width: min(500px, 90vw);
     width: 100%;
     position: relative;
     z-index: 1;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: clamp(6px, 1vh, 16px);
-    margin-bottom: clamp(12px, 2vh, 24px);
+    justify-content: center;
+    gap: clamp(8px, 1.5vh, 14px);
+    margin: 0 auto;
 }
 
 /* Badge */
@@ -398,6 +407,7 @@ h1 .gradient-text {
 .form-wrapper {
     max-width: min(440px, 85vw);
     width: 100%;
+    margin-top: clamp(8px, 1.5vh, 12px);
     animation: formSlide 1.2s var(--easing) 2.8s both;
     flex-shrink: 0;
     opacity: 0;
@@ -1482,30 +1492,29 @@ h1 .gradient-text {
 
 /* Careers Hero */
 .careers-hero {
-    flex: 1;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: clamp(16px, 3vh, 32px) clamp(16px, 3vw, 24px);
+    padding: clamp(20px, 4vh, 40px) clamp(16px, 3vw, 24px);
     text-align: center;
-    min-height: calc(100vh - 160px);
+    min-height: calc(40vh - 100px);
 }
 
 .careers-hero-content {
-    max-width: min(840px, 90vw);
+    max-width: min(600px, 90vw);
     width: 100%;
     position: relative;
     z-index: 1;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: clamp(8px, 1.5vh, 20px);
-    margin-bottom: clamp(16px, 3vh, 32px);
+    gap: clamp(12px, 2vh, 18px);
+    margin-bottom: clamp(8px, 1vh, 16px);
 }
 
 /* Positions Section */
 .positions-section {
-    padding: clamp(32px, 6vh, 64px) clamp(16px, 3vw, 24px);
+    padding: clamp(20px, 3vh, 40px) clamp(16px, 3vw, 24px);
     position: relative;
     z-index: 1;
 }
@@ -1958,10 +1967,11 @@ h1 .gradient-text {
     display: flex;
     align-items: flex-start;
     justify-content: center;
-    padding: clamp(32px, 4vh, 48px) clamp(24px, 4vw, 48px);
-    max-width: 1400px;
+    padding: clamp(20px, 3vh, 32px) clamp(16px, 3vw, 24px);
+    max-width: 1200px;
     margin: 0 auto;
     width: 100%;
+    overflow-y: auto;
 }
 
 .contact-container {
@@ -1970,7 +1980,7 @@ h1 .gradient-text {
 
 .contact-header {
     text-align: center;
-    margin-bottom: 48px;
+    margin-bottom: 32px;
 }
 
 .contact-header h1 {
@@ -1993,8 +2003,8 @@ h1 .gradient-text {
 .contact-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 48px;
-    margin-bottom: 64px;
+    gap: 32px;
+    margin-bottom: 40px;
 }
 
 .contact-form-section,

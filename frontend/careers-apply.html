@@ -1,0 +1,1063 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apply for Position - RoomSpot</title>
+    <style>
+        /* CSS Variables - Matching main website theme */
+        :root {
+            --primary: #fff;
+            --bg: #000;
+            --surface: rgba(255,255,255,0.03);
+            --border: rgba(255,255,255,0.08);
+            --text-secondary: rgba(255,255,255,0.5);
+            --accent: #0080ff;
+            --success: #00ff88;
+            --error: #ff4444;
+            --warning: #ffaa00;
+            
+            --primary-color: #0080ff;
+            --primary-color-rgb: 0, 128, 255;
+            --accent-color: #6366f1;
+            --success-color: #00ff88;
+            --success-color-rgb: 0, 255, 136;
+            --error-color: #ff4444;
+            --warning-color: #ffaa00;
+            
+            --bg-primary: #000;
+            --bg-secondary: rgba(255,255,255,0.03);
+            --bg-tertiary: rgba(255,255,255,0.05);
+            
+            --text-primary: #fff;
+            --text-secondary: rgba(255,255,255,0.65);
+            --text-muted: rgba(255,255,255,0.4);
+            
+            --border-color: rgba(255,255,255,0.08);
+            --border-focus: #0080ff;
+            
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.4);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.4);
+            
+            --radius-sm: 6px;
+            --radius-md: 8px;
+            --radius-lg: 12px;
+            --radius-xl: 16px;
+            
+            --transition-fast: 0.15s ease;
+            --transition-normal: 0.3s ease;
+            --transition-slow: 0.5s ease;
+            --easing: cubic-bezier(0.4, 0, 0.2, 1);
+            --easing-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", sans-serif;
+            background: var(--bg);
+            color: var(--primary);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Application Page Layout */
+        .application-page {
+            min-height: 100vh;
+            background: var(--bg);
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Animated Background */
+        .bg-wrapper {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .gradient-orb {
+            position: absolute;
+            width: 1200px;
+            height: 1200px;
+            background: radial-gradient(circle at center, rgba(0, 128, 255, 0.15) 0%, transparent 50%);
+            border-radius: 50%;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            opacity: 0.8;
+            mix-blend-mode: screen;
+            will-change: transform;
+        }
+
+        .gradient-orb.secondary {
+            background: radial-gradient(circle at center, rgba(128, 0, 255, 0.1) 0%, transparent 50%);
+            width: 1000px;
+            height: 1000px;
+        }
+
+        .grid-layer {
+            position: absolute;
+            inset: 0;
+            background-image: 
+                linear-gradient(rgba(255,255,255,0.01) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.01) 1px, transparent 1px);
+            background-size: 50px 50px;
+            opacity: 0.5;
+        }
+
+        /* Header */
+        .application-header {
+            padding: 1.5rem 0;
+            border-bottom: 1px solid var(--border-color);
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(20px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .back-link {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition-normal);
+            padding: 0.75rem 1rem;
+            border-radius: var(--radius-md);
+            border: 1px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .back-link::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 128, 255, 0.1), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .back-link:hover::before {
+            left: 100%;
+        }
+
+        .back-link:hover {
+            color: var(--accent);
+            border-color: var(--accent);
+            transform: translateY(-1px);
+        }
+
+        .position-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            background: linear-gradient(135deg, var(--accent), var(--accent-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Main Container */
+        .application-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Progress Tracker */
+        .progress-tracker {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 3rem;
+            gap: 2rem;
+            position: relative;
+        }
+
+        .progress-tracker::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50px;
+            right: 50px;
+            height: 3px;
+            background: var(--border-color);
+            transform: translateY(-50%);
+            z-index: 1;
+        }
+
+        .progress-step {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--bg);
+            border: 3px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            z-index: 2;
+            transition: all var(--transition-slow) var(--easing-bounce);
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .progress-step:hover {
+            transform: scale(1.05);
+            box-shadow: var(--shadow-md);
+        }
+
+        .progress-step.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: white;
+            transform: scale(1.1);
+            box-shadow: 0 0 0 8px rgba(0, 128, 255, 0.2);
+        }
+
+        .progress-step.completed {
+            background: var(--success);
+            border-color: var(--success);
+            color: var(--bg);
+            transform: scale(1.05);
+        }
+
+        .progress-step.completed::after {
+            content: '✓';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 1.5rem;
+            font-weight: bold;
+            animation: checkmarkAppear 0.4s var(--easing-bounce);
+        }
+
+        @keyframes checkmarkAppear {
+            0% { opacity: 0; transform: translate(-50%, -50%) scale(0); }
+            50% { transform: translate(-50%, -50%) scale(1.2); }
+            100% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+        }
+
+        /* Form Steps */
+        .form-step {
+            display: none;
+            animation: slideInUp 0.6s var(--easing);
+        }
+
+        .form-step.active {
+            display: block;
+        }
+
+        @keyframes slideInUp {
+            from { 
+                opacity: 0; 
+                transform: translateY(30px); 
+            }
+            to { 
+                opacity: 1; 
+                transform: translateY(0); 
+            }
+        }
+
+        .step-content {
+            background: var(--surface);
+            border-radius: var(--radius-xl);
+            padding: 3rem;
+            box-shadow: var(--shadow-xl);
+            border: 1px solid var(--border-color);
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+        }
+
+        .step-content::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent), var(--accent-color));
+        }
+
+        .step-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .step-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--accent), var(--accent-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .step-description {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            line-height: 1.6;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        /* Form Fields */
+        .form-grid {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .form-group {
+            position: relative;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            font-size: 0.95rem;
+            transition: var(--transition-fast);
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 1rem 1.25rem;
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            background: var(--bg);
+            color: var(--text-primary);
+            font-size: 1rem;
+            transition: all var(--transition-normal);
+            box-sizing: border-box;
+            font-family: inherit;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 4px rgba(0, 128, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .form-group input.error,
+        .form-group textarea.error,
+        .form-group select.error {
+            border-color: var(--error-color);
+            box-shadow: 0 0 0 4px rgba(255, 68, 68, 0.1);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .error-message {
+            color: var(--error-color);
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            animation: slideInDown 0.3s ease;
+        }
+
+        @keyframes slideInDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* File Upload */
+        .file-upload-area {
+            border: 3px dashed var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 3rem 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all var(--transition-normal);
+            background: var(--bg);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .file-upload-area::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 128, 255, 0.05), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .file-upload-area:hover::before {
+            left: 100%;
+        }
+
+        .file-upload-area:hover {
+            border-color: var(--accent);
+            background: rgba(0, 128, 255, 0.02);
+            transform: translateY(-2px);
+        }
+
+        .file-upload-area.dragover {
+            border-color: var(--success);
+            background: rgba(0, 255, 136, 0.05);
+            transform: scale(1.02);
+        }
+
+        .file-upload-area input[type="file"] {
+            display: none;
+        }
+
+        .upload-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 1.5rem;
+            color: var(--text-secondary);
+            transition: var(--transition-normal);
+        }
+
+        .file-upload-area:hover .upload-icon {
+            color: var(--accent);
+            transform: scale(1.1);
+        }
+
+        .upload-text {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .upload-hint {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* Navigation */
+        .form-navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 3rem;
+            gap: 1.5rem;
+        }
+
+        .nav-btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: var(--radius-lg);
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all var(--transition-normal);
+            min-width: 160px;
+            position: relative;
+            overflow: hidden;
+            font-family: inherit;
+        }
+
+        .nav-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .nav-btn:hover::before {
+            left: 100%;
+        }
+
+        .btn-prev {
+            background: var(--bg);
+            color: var(--text-primary);
+            border: 2px solid var(--border-color);
+        }
+
+        .btn-prev:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-next {
+            background: var(--accent);
+            color: white;
+        }
+
+        .btn-next:hover {
+            background: var(--accent-color);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 128, 255, 0.3);
+        }
+
+        .btn-submit {
+            background: var(--success);
+            color: var(--bg);
+        }
+
+        .btn-submit:hover {
+            background: #00cc6a;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 255, 136, 0.3);
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .nav-btn.loading {
+            position: relative;
+            color: transparent;
+        }
+
+        .nav-btn.loading::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 20px;
+            height: 20px;
+            margin: -10px 0 0 -10px;
+            border: 2px solid transparent;
+            border-top: 2px solid currentColor;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Success Animation */
+        .success-animation {
+            text-align: center;
+            padding: 4rem 2rem;
+        }
+
+        .success-icon {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 2rem;
+            background: var(--success);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: successPulse 2s ease;
+            box-shadow: 0 0 0 20px rgba(0, 255, 136, 0.1);
+        }
+
+        @keyframes successPulse {
+            0% { transform: scale(0); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        .success-icon::after {
+            content: '✓';
+            color: var(--bg);
+            font-size: 3rem;
+            font-weight: bold;
+        }
+
+        .success-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .success-message {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            line-height: 1.6;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        /* Checkbox Styling */
+        .checkbox-group {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            cursor: pointer;
+            padding: 1rem;
+            border-radius: var(--radius-md);
+            background: var(--bg);
+            border: 1px solid var(--border-color);
+            transition: var(--transition-normal);
+        }
+
+        .checkbox-group:hover {
+            border-color: var(--accent);
+            background: rgba(0, 128, 255, 0.02);
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: auto;
+            margin: 0;
+            cursor: pointer;
+        }
+
+        .checkbox-group label {
+            margin: 0;
+            cursor: pointer;
+            line-height: 1.5;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .application-container {
+                padding: 2rem 1rem;
+            }
+
+            .step-content {
+                padding: 2rem 1.5rem;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .progress-tracker {
+                gap: 1rem;
+            }
+
+            .progress-step {
+                width: 50px;
+                height: 50px;
+                font-size: 1rem;
+            }
+
+            .nav-btn {
+                padding: 0.875rem 1.5rem;
+                min-width: 120px;
+                font-size: 0.9rem;
+            }
+
+            .step-title {
+                font-size: 2rem;
+            }
+
+            .success-title {
+                font-size: 2rem;
+            }
+        }
+
+        /* Loading States */
+        .loading {
+            opacity: 0.7;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="application-page">
+        <!-- Background -->
+        <div class="bg-wrapper">
+            <div class="gradient-orb" id="gradientOrb" style="transform: translate(-50%, -50%);"></div>
+            <div class="gradient-orb secondary" id="gradientOrbSecondary" style="transform: translate(-50%, -50%);"></div>
+            <div class="grid-layer"></div>
+        </div>
+
+        <!-- Header -->
+        <header class="application-header">
+            <div class="header-content">
+                <a href="careers.html" class="back-link">
+                    ← Back to Careers
+                </a>
+                <div class="position-title" id="positionTitle">Apply for Position</div>
+            </div>
+        </header>
+
+        <!-- Main Container -->
+        <div class="application-container">
+            <!-- Progress Tracker -->
+            <div class="progress-tracker">
+                <div class="progress-step active" data-step="1">
+                    <span>1</span>
+                </div>
+                <div class="progress-step" data-step="2">
+                    <span>2</span>
+                </div>
+                <div class="progress-step" data-step="3">
+                    <span>3</span>
+                </div>
+                <div class="progress-step" data-step="4">
+                    <span>4</span>
+                </div>
+                <div class="progress-step" data-step="5">
+                    <span>5</span>
+                </div>
+            </div>
+
+            <!-- Multi-step Form -->
+            <form id="applicationForm">
+                <!-- Step 1: Personal Information -->
+                <div class="form-step active" data-step="1">
+                    <div class="step-content">
+                        <div class="step-header">
+                            <h2 class="step-title">Personal Information</h2>
+                            <p class="step-description">Let's start with your basic information</p>
+                        </div>
+                        
+                        <div class="form-grid">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="firstName">First Name *</label>
+                                    <input type="text" id="firstName" name="firstName" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="lastName">Last Name *</label>
+                                    <input type="text" id="lastName" name="lastName" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="email">Email Address *</label>
+                                <input type="email" id="email" name="email" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="phone">Phone Number</label>
+                                <input type="tel" id="phone" name="phone">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="location">Location *</label>
+                                <input type="text" id="location" name="location" placeholder="City, Country" required>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 2: Professional Background -->
+                <div class="form-step" data-step="2">
+                    <div class="step-content">
+                        <div class="step-header">
+                            <h2 class="step-title">Professional Background</h2>
+                            <p class="step-description">Tell us about your experience and skills</p>
+                        </div>
+                        
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="linkedin">LinkedIn Profile</label>
+                                <input type="url" id="linkedin" name="linkedin" placeholder="https://linkedin.com/in/yourprofile">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="portfolio">Portfolio/Website</label>
+                                <input type="url" id="portfolio" name="portfolio" placeholder="https://yourportfolio.com">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="experience">Years of Experience *</label>
+                                <select id="experience" name="experience" required>
+                                    <option value="">Select experience level</option>
+                                    <option value="0-1">0-1 years</option>
+                                    <option value="1-3">1-3 years</option>
+                                    <option value="3-5">3-5 years</option>
+                                    <option value="5-7">5-7 years</option>
+                                    <option value="7-10">7-10 years</option>
+                                    <option value="10+">10+ years</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="currentCompany">Current Company</label>
+                                <input type="text" id="currentCompany" name="currentCompany">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="skills">Key Skills & Technologies</label>
+                                <textarea id="skills" name="skills" placeholder="e.g., React, TypeScript, Node.js, AWS..."></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 3: Application Details -->
+                <div class="form-step" data-step="3">
+                    <div class="step-content">
+                        <div class="step-header">
+                            <h2 class="step-title">Application Details</h2>
+                            <p class="step-description">Help us understand your interest and qualifications</p>
+                        </div>
+                        
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="position">Position Applied For *</label>
+                                <input type="text" id="position" name="position" readonly>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="coverLetter">Cover Letter *</label>
+                                <textarea id="coverLetter" name="coverLetter" placeholder="Tell us why you're interested in this position and what makes you a great fit..." required></textarea>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="salaryExpectation">Salary Expectation</label>
+                                    <input type="text" id="salaryExpectation" name="salaryExpectation" placeholder="e.g., $80,000 - $100,000">
+                                </div>
+                                <div class="form-group">
+                                    <label for="startDate">Earliest Start Date</label>
+                                    <input type="date" id="startDate" name="startDate">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="referral">How did you hear about us?</label>
+                                <select id="referral" name="referral">
+                                    <option value="">Select an option</option>
+                                    <option value="linkedin">LinkedIn</option>
+                                    <option value="indeed">Indeed</option>
+                                    <option value="glassdoor">Glassdoor</option>
+                                    <option value="referral">Employee Referral</option>
+                                    <option value="website">Company Website</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 4: F1/Immigration & EEO Information -->
+                <div class="form-step" data-step="4">
+                    <div class="step-content">
+                        <div class="step-header">
+                            <h2 class="step-title">Immigration & EEO Information</h2>
+                            <p class="step-description">Help us understand your work authorization and demographic information</p>
+                        </div>
+                        
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="workAuthorization">Work Authorization Status *</label>
+                                <select id="workAuthorization" name="workAuthorization" required>
+                                    <option value="">Select your work authorization</option>
+                                    <option value="us-citizen">U.S. Citizen</option>
+                                    <option value="permanent-resident">Permanent Resident (Green Card)</option>
+                                    <option value="f1-student">F1 Student Visa</option>
+                                    <option value="h1b">H1B Visa</option>
+                                    <option value="other-visa">Other Work Visa</option>
+                                    <option value="no-authorization">No work authorization</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group" id="f1Fields" style="display: none;">
+                                <label for="f1Details">F1 Student Details</label>
+                                <textarea id="f1Details" name="f1Details" placeholder="Please provide details about your F1 status, including university, program, and expected graduation date..."></textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="sponsorship">Do you require visa sponsorship now or in the future?</label>
+                                <select id="sponsorship" name="sponsorship" required>
+                                    <option value="">Select an option</option>
+                                    <option value="no">No, I don't require sponsorship</option>
+                                    <option value="yes-now">Yes, I need sponsorship now</option>
+                                    <option value="yes-future">Yes, I may need sponsorship in the future</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="relocation">Are you willing to relocate for this position?</label>
+                                <select id="relocation" name="relocation">
+                                    <option value="">Select an option</option>
+                                    <option value="yes">Yes, I'm willing to relocate</option>
+                                    <option value="no">No, I prefer remote work</option>
+                                    <option value="maybe">Maybe, depending on the location</option>
+                                </select>
+                            </div>
+
+                            <!-- EEO Information -->
+                            <div class="form-group">
+                                <label>Equal Employment Opportunity Information</label>
+                                <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1rem;">
+                                    This information is voluntary and will be kept confidential. It helps us ensure equal opportunity in our hiring process.
+                                </p>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="gender">Gender Identity</label>
+                                <select id="gender" name="gender">
+                                    <option value="">Prefer not to say</option>
+                                    <option value="male">Male</option>
+                                    <option value="female">Female</option>
+                                    <option value="non-binary">Non-binary</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="race">Race/Ethnicity</label>
+                                <select id="race" name="race">
+                                    <option value="">Prefer not to say</option>
+                                    <option value="asian">Asian</option>
+                                    <option value="black">Black or African American</option>
+                                    <option value="hispanic">Hispanic or Latino</option>
+                                    <option value="white">White</option>
+                                    <option value="native-american">Native American or Alaska Native</option>
+                                    <option value="pacific-islander">Native Hawaiian or Pacific Islander</option>
+                                    <option value="middle-eastern">Middle Eastern or North African</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="veteran">Are you a veteran?</label>
+                                <select id="veteran" name="veteran">
+                                    <option value="">Prefer not to say</option>
+                                    <option value="yes">Yes, I am a veteran</option>
+                                    <option value="no">No, I am not a veteran</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="disability">Do you have a disability?</label>
+                                <select id="disability" name="disability">
+                                    <option value="">Prefer not to say</option>
+                                    <option value="yes">Yes, I have a disability</option>
+                                    <option value="no">No, I don't have a disability</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 5: Documents & Submit -->
+                <div class="form-step" data-step="5">
+                    <div class="step-content">
+                        <div class="step-header">
+                            <h2 class="step-title">Documents & Review</h2>
+                            <p class="step-description">Upload your resume and review your application</p>
+                        </div>
+                        
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label>Resume/CV *</label>
+                                <div class="file-upload-area" onclick="document.getElementById('resume').click()">
+                                    <input type="file" id="resume" name="resume" accept=".pdf,.doc,.docx" required>
+                                    <div class="upload-icon">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                            <polyline points="14,2 14,8 20,8"></polyline>
+                                            <line x1="16" y1="13" x2="8" y2="13"></line>
+                                            <line x1="16" y1="17" x2="8" y2="17"></line>
+                                        </svg>
+                                    </div>
+                                    <div class="upload-text">Click to upload resume</div>
+                                    <div class="upload-hint">PDF, DOC, or DOCX (max 5MB)</div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Additional Documents</label>
+                                <div class="file-upload-area" onclick="document.getElementById('additionalDocs').click()">
+                                    <input type="file" id="additionalDocs" name="additionalDocs" multiple accept=".pdf,.doc,.docx,.jpg,.jpeg,.png">
+                                    <div class="upload-icon">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                            <polyline points="14,2 14,8 20,8"></polyline>
+                                            <line x1="16" y1="13" x2="8" y2="13"></line>
+                                            <line x1="16" y1="17" x2="8" y2="17"></line>
+                                        </svg>
+                                    </div>
+                                    <div class="upload-text">Click to upload additional documents</div>
+                                    <div class="upload-hint">Portfolio, certificates, etc. (optional)</div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="checkbox-group">
+                                    <input type="checkbox" id="agreeTerms" name="agreeTerms" required>
+                                    <label for="agreeTerms">I agree to the terms and conditions and consent to the processing of my personal data</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Success Step -->
+                <div class="form-step" data-step="6">
+                    <div class="step-content">
+                        <div class="success-animation">
+                            <div class="success-icon"></div>
+                            <h2 class="success-title">Application Submitted!</h2>
+                            <p class="success-message">
+                                Thank you for your interest in joining RoomSpot. We've received your application and will review it carefully. 
+                                You'll hear from us within 1-2 weeks.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Form Navigation -->
+                <div class="form-navigation">
+                    <button type="button" class="nav-btn btn-prev" id="prevBtn" style="display: none;">Previous</button>
+                    <button type="button" class="nav-btn btn-next" id="nextBtn">Next</button>
+                    <button type="submit" class="nav-btn btn-submit" id="submitBtn" style="display: none;">Submit Application</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="src/supabase-init.js"></script>
+    <script src="src/multi-step-form.js"></script>
+</body>
+</html> 
